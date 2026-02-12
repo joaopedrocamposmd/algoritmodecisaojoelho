@@ -3,116 +3,95 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Knee Decision System — v5</title>
+<title>Knee Decision System — v5.2</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
---bg:#04070c;--s1:#0a0f18;--s2:#0f1520;--s3:#151d2b;--s4:#1c2638;
---bdr:#1a2436;--bdr2:#253550;
---t1:#e8ecf4;--t2:#a4b0c8;--t3:#6b7a96;--t4:#4a5874;
---green:#34d399;--green-bg:rgba(52,211,153,.07);--green-bdr:rgba(52,211,153,.22);
---blue:#38bdf8;--blue-bg:rgba(56,189,248,.07);--blue-bdr:rgba(56,189,248,.22);
---amber:#fbbf24;--amber-bg:rgba(251,191,36,.07);--amber-bdr:rgba(251,191,36,.22);
---red:#fb7185;--red-bg:rgba(251,113,133,.07);--red-bdr:rgba(251,113,133,.22);
---purple:#a78bfa;--purple-bg:rgba(167,139,250,.07);--purple-bdr:rgba(167,139,250,.22);
---cyan:#22d3ee;--cyan-bg:rgba(34,211,238,.07);--cyan-bdr:rgba(34,211,238,.22);
---teal:#2dd4bf;--teal-bg:rgba(45,212,191,.07);--teal-bdr:rgba(45,212,191,.22);
---orange:#f97316;--orange-bg:rgba(249,115,22,.07);--orange-bdr:rgba(249,115,22,.22);
---r:10px;--r2:14px;
-}
+:root{--bg:#04070c;--s1:#0a0f18;--s2:#0f1520;--s3:#151d2b;--s4:#1c2638;--bdr:#1a2436;--bdr2:#253550;--t1:#e8ecf4;--t2:#a4b0c8;--t3:#6b7a96;--t4:#4a5874;--green:#34d399;--green-bg:rgba(52,211,153,.07);--green-bdr:rgba(52,211,153,.22);--blue:#38bdf8;--blue-bg:rgba(56,189,248,.07);--blue-bdr:rgba(56,189,248,.22);--amber:#fbbf24;--amber-bg:rgba(251,191,36,.07);--amber-bdr:rgba(251,191,36,.22);--red:#fb7185;--red-bg:rgba(251,113,133,.07);--red-bdr:rgba(251,113,133,.22);--purple:#a78bfa;--purple-bg:rgba(167,139,250,.07);--purple-bdr:rgba(167,139,250,.22);--cyan:#22d3ee;--cyan-bg:rgba(34,211,238,.07);--cyan-bdr:rgba(34,211,238,.22);--teal:#2dd4bf;--teal-bg:rgba(45,212,191,.07);--teal-bdr:rgba(45,212,191,.22);--r:10px;--r2:14px}
 body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--t1);line-height:1.6;-webkit-font-smoothing:antialiased}
 body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(56,189,248,.025),transparent 70%);pointer-events:none;z-index:0}
 .wrap{max-width:1020px;margin:0 auto;padding:28px 18px 120px;position:relative;z-index:1}
-header{text-align:center;padding:36px 0 28px;border-bottom:1px solid var(--bdr);margin-bottom:28px}
+header{text-align:center;padding:36px 0 20px}
 .sys-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:var(--s2);border:1px solid var(--bdr);border-radius:99px;font-size:10.5px;font-weight:600;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px}
 .sys-badge i{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)}
-h1{font-family:'DM Serif Display',serif;font-size:clamp(22px,4vw,34px);line-height:1.2;margin-bottom:8px}
+h1{font-family:'DM Serif Display',serif;font-size:clamp(22px,4vw,34px);line-height:1.2;margin-bottom:6px}
 .sub{font-size:13px;color:var(--t3);max-width:640px;margin:0 auto;font-weight:300}
-/* Pathway selector */
-.path-sel{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+.sticky-nav{position:sticky;top:0;z-index:100;background:rgba(4,7,12,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--bdr);padding:8px 18px;margin:0 -18px;display:none;align-items:center;gap:8px;flex-wrap:wrap}
+.sticky-nav.vis{display:flex}
+.sticky-nav button{padding:5px 14px;border-radius:8px;border:1px solid var(--bdr);background:var(--s2);color:var(--t3);font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s;white-space:nowrap}
+.sticky-nav button:hover{border-color:var(--blue);color:var(--blue)}
+.sticky-nav .nav-label{font-size:11.5px;font-weight:600;color:var(--blue);flex:1}
+.path-sel{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0 24px}
 .path-card{padding:20px;background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r2);cursor:pointer;transition:.2s;position:relative;overflow:hidden}
 .path-card:hover{border-color:var(--bdr2);background:var(--s2)}
 .path-card.active{border-color:var(--blue);background:var(--blue-bg)}
 .path-card.active::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--blue)}
-.path-icon{font-size:26px;margin-bottom:8px}
-.path-title{font-size:14px;font-weight:700;margin-bottom:4px}
+.path-icon{font-size:26px;margin-bottom:8px}.path-title{font-size:14px;font-weight:700;margin-bottom:4px}
 .path-desc{font-size:11.5px;color:var(--t3);line-height:1.5}
 .path-card.active .path-title{color:var(--blue)}
 @media(max-width:600px){.path-sel{grid-template-columns:1fr}}
-/* Steps */
-.step{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r2);overflow:hidden;animation:fadeUp .3s ease both}
-.step+.step{margin-top:10px}
+.step{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r2);overflow:hidden;animation:fadeUp .3s ease both}.step+.step{margin-top:10px}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .step-head{display:flex;align-items:center;gap:10px;padding:13px 16px;background:var(--s2);border-bottom:1px solid var(--bdr)}
 .sn{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;background:var(--s4);color:var(--t3)}
 .sn.on{background:var(--blue);color:#fff}.sn.ok{background:var(--green);color:#000}
 .st{font-size:13px;font-weight:600;flex:1}
-.sv{font-size:11.5px;color:var(--t3);max-width:260px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sv{font-size:11px;color:var(--t3);max-width:260px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .s-edit{background:none;border:1px solid var(--bdr);color:var(--t4);padding:2px 9px;border-radius:6px;font-size:10px;cursor:pointer;font-family:inherit;margin-left:5px;transition:.15s}
 .s-edit:hover{border-color:var(--blue);color:var(--t2)}
-.step-body{padding:16px}
-.q{font-size:13.5px;color:var(--t2);margin-bottom:12px}
+.step-body{padding:16px}.q{font-size:13.5px;color:var(--t2);margin-bottom:10px}
 .opts{display:flex;flex-direction:column;gap:5px}
 .opt{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;background:var(--s2);border:1px solid var(--bdr);border-radius:var(--r);cursor:pointer;transition:.15s}
-.opt:hover{border-color:var(--bdr2);background:var(--s3)}
-.opt.sel{border-color:var(--blue);background:var(--blue-bg)}
-.orad{width:15px;height:15px;border-radius:50%;border:2px solid var(--t4);flex-shrink:0;margin-top:2px;transition:.15s;display:flex;align-items:center;justify-content:center}
-.opt.sel .orad{border-color:var(--blue);background:var(--blue)}
-.opt.sel .orad::after{content:'';width:4px;height:4px;border-radius:50%;background:#fff}
+.opt:hover{border-color:var(--bdr2);background:var(--s3)}.opt.sel{border-color:var(--blue);background:var(--blue-bg)}
+.orad{width:15px;height:15px;border-radius:50%;border:2px solid var(--t4);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center}
+.opt.sel .orad{border-color:var(--blue);background:var(--blue)}.opt.sel .orad::after{content:'';width:4px;height:4px;border-radius:50%;background:#fff}
 .ol{font-size:12.5px;font-weight:600}.od{font-size:11px;color:var(--t3);line-height:1.5;margin-top:1px}
 .mopt{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;background:var(--s2);border:1px solid var(--bdr);border-radius:var(--r);cursor:pointer;transition:.15s}
-.mopt:hover{border-color:var(--bdr2);background:var(--s3)}
-.mopt.sel{border-color:var(--cyan);background:var(--cyan-bg)}
-.mchk{width:15px;height:15px;border-radius:4px;border:2px solid var(--t4);flex-shrink:0;margin-top:2px;transition:.15s;display:flex;align-items:center;justify-content:center;font-size:9px;color:transparent}
+.mopt:hover{border-color:var(--bdr2);background:var(--s3)}.mopt.sel{border-color:var(--cyan);background:var(--cyan-bg)}
+.mchk{width:15px;height:15px;border-radius:4px;border:2px solid var(--t4);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:9px;color:transparent}
 .mopt.sel .mchk{border-color:var(--cyan);background:var(--cyan);color:#000}
 .mnext{margin-top:8px;text-align:right}
 .mnext button{padding:7px 20px;border-radius:8px;border:1px solid var(--blue-bdr);background:var(--blue-bg);color:var(--blue);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s}
 .mnext button:hover{background:var(--blue);color:#000}
-.cref{margin:6px 0 0;padding:7px 11px;background:rgba(56,189,248,.03);border:1px solid rgba(56,189,248,.1);border-radius:8px;font-size:11px;color:var(--t3);line-height:1.6}
-.cref strong{color:var(--blue);font-weight:600}
-/* Results */
+.cref{margin:6px 0 8px;padding:7px 11px;background:rgba(56,189,248,.03);border:1px solid rgba(56,189,248,.1);border-radius:8px;font-size:11px;color:var(--t3);line-height:1.6}.cref strong{color:var(--blue);font-weight:600}
 .result{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r2);padding:20px;margin-top:12px;animation:fadeUp .35s ease both}
-.result.repair{border-color:var(--green-bdr);background:var(--green-bg)}
-.result.hto{border-color:var(--blue-bdr);background:var(--blue-bg)}
-.result.puc{border-color:var(--amber-bdr);background:var(--amber-bg)}
-.result.ptj{border-color:var(--red-bdr);background:var(--red-bg)}
-.result.conserv{border-color:var(--purple-bdr);background:var(--purple-bg)}
-.result.combo{border-color:var(--teal-bdr);background:var(--teal-bg)}
-.result.exams{border-color:var(--cyan-bdr);background:var(--cyan-bg)}
+.result.repair{border-color:var(--green-bdr);background:var(--green-bg)}.result.hto{border-color:var(--blue-bdr);background:var(--blue-bg)}.result.puc{border-color:var(--amber-bdr);background:var(--amber-bg)}.result.ptj{border-color:var(--red-bdr);background:var(--red-bg)}.result.conserv{border-color:var(--purple-bdr);background:var(--purple-bg)}.result.combo{border-color:var(--teal-bdr);background:var(--teal-bg)}.result.exams{border-color:var(--cyan-bdr);background:var(--cyan-bg)}
 .rtag{display:inline-block;padding:3px 12px;border-radius:99px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px}
-.rtag.repair{background:var(--green);color:#000}.rtag.hto{background:var(--blue);color:#000}
-.rtag.puc{background:var(--amber);color:#000}.rtag.ptj{background:var(--red);color:#000}
-.rtag.conserv{background:var(--purple);color:#000}.rtag.combo{background:var(--teal);color:#000}
-.rtag.exams{background:var(--cyan);color:#000}
+.rtag.repair{background:var(--green);color:#000}.rtag.hto{background:var(--blue);color:#000}.rtag.puc{background:var(--amber);color:#000}.rtag.ptj{background:var(--red);color:#000}.rtag.conserv{background:var(--purple);color:#000}.rtag.combo{background:var(--teal);color:#000}.rtag.exams{background:var(--cyan);color:#000}
 .rh{font-family:'DM Serif Display',serif;font-size:18px;margin-bottom:10px}
-.rb{font-size:12.5px;color:var(--t2);line-height:1.7}
-.rb ul{padding-left:16px;margin:6px 0}.rb li{margin-bottom:3px}.rb li.warn{color:var(--amber);font-weight:600}
+.rb{font-size:12.5px;color:var(--t2);line-height:1.7}.rb ul{padding-left:16px;margin:6px 0}.rb li{margin-bottom:3px}.rb li.warn{color:var(--amber);font-weight:600}
 .rb .note{margin-top:10px;padding:8px 10px;background:rgba(255,255,255,.03);border-radius:6px;font-size:11px;color:var(--t3);border:1px solid var(--bdr)}
 .rrefs{margin-top:10px;font-size:11px;color:var(--t3)}.rrefs summary{cursor:pointer;font-weight:600;color:var(--t2)}.rrefs p{margin-top:4px;line-height:1.6}
-/* DDx cards */
-.ddx-grid{display:grid;gap:8px}
-.ddx{padding:14px;background:var(--s2);border:1px solid var(--bdr);border-radius:var(--r);transition:.15s}
+.ref-link{color:var(--blue);text-decoration:none;border-bottom:1px dotted rgba(56,189,248,.35);transition:color .15s,border-color .15s;font-weight:500}.ref-link:hover{color:var(--cyan);border-bottom-color:var(--cyan)}
+.ddx{padding:14px;background:var(--s2);border:1px solid var(--bdr);border-radius:var(--r);margin-bottom:8px}
 .ddx-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px}
 .ddx-name{font-size:13px;font-weight:700}
 .ddx-prob{font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;white-space:nowrap}
 .ddx-prob.likely{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bdr)}
 .ddx-prob.possible{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bdr)}
-.ddx-keys{font-size:11px;color:var(--t3);line-height:1.5;margin-bottom:6px}
-.ddx-exam{font-size:11px;color:var(--t2);line-height:1.5}.ddx-exam strong{color:var(--cyan)}
+.ddx-keys{font-size:11px;color:var(--t3);line-height:1.5;margin-bottom:4px}
+.ddx-exam{font-size:11px;color:var(--t2)}.ddx-exam strong{color:var(--cyan)}
 .exam-panel{background:var(--s2);border:1px solid var(--cyan-bdr);border-radius:var(--r2);padding:16px;margin-top:12px}
 .exam-cat-title{font-size:12px;font-weight:700;color:var(--cyan);margin-bottom:6px;text-transform:uppercase;letter-spacing:.8px}
-.exam-item{display:flex;gap:8px;padding:6px 0;font-size:12px;border-bottom:1px solid var(--bdr)}
-.exam-item:last-child{border-bottom:none}
-.exam-item .ei-name{font-weight:600;min-width:160px;flex-shrink:0}
-.exam-item .ei-why{color:var(--t3);flex:1}
-/* Bars */
-.rbar{text-align:center;margin-top:16px}
-.rbar button{padding:8px 24px;border-radius:8px;border:1px solid var(--bdr);background:var(--s2);color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s}
-.rbar button:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-bg)}
-.footer{margin-top:28px;padding:14px 16px;background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r2);font-size:10.5px;color:var(--t4);line-height:1.6}
-.footer strong{color:var(--t3)}
-@media(max-width:600px){.step-head{padding:10px 12px}.step-body{padding:12px}.result{padding:14px}.exam-item{flex-direction:column}.exam-item .ei-name{min-width:auto}}
+.exam-item{display:flex;gap:8px;padding:6px 0;font-size:12px;border-bottom:1px solid var(--bdr)}.exam-item:last-child{border-bottom:none}
+.exam-item .ei-name{font-weight:600;min-width:160px;flex-shrink:0}.exam-item .ei-why{color:var(--t3);flex:1}
+.prom-form{background:var(--s2);border:1px solid var(--purple-bdr);border-radius:var(--r2);padding:16px;margin-top:8px}
+.prom-form h3{font-size:13px;font-weight:700;color:var(--purple);margin-bottom:10px}
+.prom-q{margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--bdr)}.prom-q:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.prom-q-text{font-size:12px;margin-bottom:6px;color:var(--t2)}
+.prom-opts{display:flex;gap:4px;flex-wrap:wrap}
+.prom-opt{padding:4px 10px;border-radius:6px;border:1px solid var(--bdr);background:var(--s3);font-size:11px;cursor:pointer;transition:.15s;color:var(--t3)}
+.prom-opt:hover{border-color:var(--bdr2);color:var(--t2)}
+.prom-opt.sel{border-color:var(--purple);background:var(--purple-bg);color:var(--purple);font-weight:600}
+.prom-score{margin-top:12px;padding:10px;background:rgba(167,139,250,.06);border:1px solid var(--purple-bdr);border-radius:8px;font-size:12px;text-align:center}
+.prom-score .score-num{font-size:24px;font-weight:700;color:var(--purple);font-family:'DM Serif Display',serif}
+.num-input-row{display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.num-input-row label{font-size:12px;font-weight:600;min-width:80px}
+.num-input-row input{width:75px;padding:6px 8px;background:var(--s3);border:1px solid var(--bdr);border-radius:6px;color:var(--t1);font-family:inherit;font-size:13px;text-align:center}
+.num-input-row input:focus{outline:none;border-color:var(--blue)}
+.num-input-row .unit{font-size:11px;color:var(--t3)}.num-input-row .hint{font-size:10px;color:var(--t4)}
+.footer{margin-top:28px;padding:14px 16px;background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r2);font-size:10.5px;color:var(--t4);line-height:1.6}.footer strong{color:var(--t3)}
+@media(max-width:600px){.step-head{padding:10px 12px}.step-body{padding:12px}.result{padding:14px}.exam-item{flex-direction:column}.exam-item .ei-name{min-width:auto}.num-input-row{flex-direction:column;align-items:flex-start;gap:4px}}
 </style>
 </head>
 <body>
@@ -120,33 +99,40 @@ h1{font-family:'DM Serif Display',serif;font-size:clamp(22px,4vw,34px);line-heig
 <header>
   <div class="sys-badge"><i></i> Knee Decision System</div>
   <h1>Algoritmo de Decisão — Joelho</h1>
-  <div class="sub">Sistema modular de apoio à decisão clínica. Seleccione o tipo de consulta para iniciar.</div>
+  <div class="sub">Sistema modular de apoio à decisão clínica · Compartimento Medial</div>
 </header>
-<div id="topbar" style="display:none;position:sticky;top:0;z-index:100;background:var(--s1);border-bottom:1px solid var(--bdr);padding:8px 16px;margin:-28px -18px 16px;backdrop-filter:blur(12px);display:none">
-  <div style="max-width:1020px;margin:0 auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-    <button onclick="resetPathway()" style="background:var(--s2);border:1px solid var(--bdr);color:var(--t3);padding:5px 12px;border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit;transition:.15s" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--bdr)';this.style.color='var(--t3)'">← Tipo consulta</button>
-    <span id="topbar-label" style="font-size:11.5px;font-weight:600;color:var(--blue);flex:1"></span>
-    <button onclick="restart()" style="background:var(--s2);border:1px solid var(--bdr);color:var(--t3);padding:5px 12px;border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit;transition:.15s" onmouseover="this.style.borderColor='var(--green)';this.style.color='var(--green)'" onmouseout="this.style.borderColor='var(--bdr)';this.style.color='var(--t3)'">↻ Novo doente</button>
-  </div>
-</div>
+<div id="nav" class="sticky-nav"><button onclick="resetPW()">← Tipo consulta</button><button onclick="restart()">↻ Novo doente</button><span class="nav-label" id="nav-label"></span></div>
 <div id="app"></div>
 <div class="footer">
-  <strong>Disclaimer:</strong> Ferramenta de apoio à decisão — não substitui o julgamento clínico individualizado.<br>
-  <strong>Versão:</strong> 5.0 · Módulo: Compartimento Medial (1ª Consulta + Reavaliação)<br>
-  <strong>Evidência principal:</strong> Lee Arthroscopy 2025; Tokumoto 2025; Singh 2025; Kawada 2025; Deichsel AJSM 2024; Olsen Acta Orthop 2025; LaPrade AJSM 2015; ESSKA-AOSSM 2024; AAOS CPG 2024; Sokal KSSTA 2022; Barahona Cureus 2024; OMEX 10y 2024.
+  <strong>Disclaimer:</strong> Não substitui o julgamento clínico individualizado.<br>
+  <strong>v5.2</strong> · Osteotomy Consensus 2022; UK KOG 2021; Lee 2025; Tokumoto 2025; Singh 2025; Deichsel 2024; Kawada 2025; Olsen 2025; LaPrade 2015; ESSKA-AOSSM 2024; AAOS CPG 2024; Sokal KSSTA 2022; Barahona Cureus 2024; OMEX 10y 2024; FIDELITY 2020; Fillingham 2019; Babis 2002; Schröter 2017; Micicoi 2020.
 </div>
 </div>
 <script>
+const OKS_Q=[
+{q:'Como descreveria a dor que habitualmente sente no joelho?',opts:['Nenhuma','Muito ligeira','Ligeira','Moderada','Intensa'],sc:[4,3,2,1,0]},
+{q:'Tem tido dificuldade em lavar-se e secar-se (da cintura para baixo) por causa do joelho?',opts:['Nenhuma','Muito pouca','Moderada','Extrema dificuldade','Impossível'],sc:[4,3,2,1,0]},
+{q:'Tem tido dificuldade em entrar e sair de um carro ou transportes públicos?',opts:['Nenhuma','Muito pouca','Moderada','Extrema dificuldade','Impossível'],sc:[4,3,2,1,0]},
+{q:'Durante quanto tempo consegue andar antes da dor se tornar intensa? (com ou sem bengala)',opts:['>30 minutos','16–30 minutos','5–15 minutos','Apenas em casa','Nem em casa'],sc:[4,3,2,1,0]},
+{q:'Depois de se sentar à mesa, qual a dificuldade em levantar-se da cadeira?',opts:['Nenhuma','Pouca','Moderada','Muito difícil','Impossível'],sc:[4,3,2,1,0]},
+{q:'Coxeia por causa do joelho?',opts:['Raramente/nunca','Às vezes / início marcha','Frequentemente','Quase sempre','Sempre'],sc:[4,3,2,1,0]},
+{q:'Consegue ajoelhar-se e voltar a levantar-se?',opts:['Sim, facilmente','Alguma dificuldade','Dificuldade moderada','Extrema dificuldade','Impossível'],sc:[4,3,2,1,0]},
+{q:'É incomodado pela dor no joelho durante a noite na cama?',opts:['Nunca','1–2 noites','Algumas noites','Maioria das noites','Todas as noites'],sc:[4,3,2,1,0]},
+{q:'Quanto a dor interfere com o trabalho habitual (incluindo tarefas domésticas)?',opts:['Nada','Um pouco','Moderadamente','Muito','Totalmente'],sc:[4,3,2,1,0]},
+{q:'Sente que o joelho pode "ceder" ou falhar?',opts:['Nunca','Raramente','Às vezes','Frequentemente','Sempre'],sc:[4,3,2,1,0]},
+{q:'Consegue fazer as compras sozinho(a)?',opts:['Sim, facilmente','Alguma dificuldade','Dificuldade moderada','Extrema dificuldade','Impossível'],sc:[4,3,2,1,0]},
+{q:'Consegue descer um lance de escadas?',opts:['Sim, facilmente','Alguma dificuldade','Dificuldade moderada','Extrema dificuldade','Impossível'],sc:[4,3,2,1,0]}
+];
 // ============================================================
 //  KNEE DECISION SYSTEM v5
 // ============================================================
-let pathway=null, cur=0, ans={};
+let PW=null, cur=0, ans={}, promData={};
 const $=id=>document.getElementById(id);
 
 // ─── STEP DEFINITIONS ───
 
 // ──── 1ª CONSULTA ────
-const FIRST=[
+const FC=[
 {id:'loc',title:'Localização da Dor',type:'single',q:'Localização principal referida pelo doente:',
  opts:[
   {v:'medial',l:'Interlinha medial / face medial',d:'Interlinha articular medial, LCM, pata de ganso.'},
@@ -186,7 +172,7 @@ const FIRST=[
 ];
 
 // ──── REAVALIAÇÃO ────
-const FOLLOWUP=[
+const FU=[
 {id:'cart',title:'Artrose — Cartilagem',type:'single',
  q:'Classificação artrose compartimento medial:',
  classRef:'<strong>KL:</strong> RX carga Schuss + Rosenberg. <strong>Outerbridge-RM:</strong> Grau 0–IV.',
@@ -198,41 +184,26 @@ const FOLLOWUP=[
 ]},
 {id:'menisc',title:'Patologia Meniscal Medial',type:'single',
  q:'Tipo de lesão meniscal (RM ± artroscopia):',
- classRef:'<strong>Root tears:</strong> LaPrade Tipos 1–8. <strong>Não-root:</strong> degenerativas (flap, horizontal, complexa), traumáticas (longitudinal, bucket-handle), quistos parameniscais.',
+ classRef:'<strong>Princípio ESSKA 2019/2024:</strong> Preservação do menisco = 1ª linha. Roturas "irreparáveis" são menos do que se pensava — roturas antigas, doentes obesos, roturas longas e ≥60a podem ser reparadas com resultados aceitáveis. <strong>Root tears:</strong> LaPrade Tipos 1–8; biomecânica = meniscectomia total; reparação pullout + centralização superior a meniscectomia e conservador (OR 0.15 para PTJ, 10a). <strong>Ramp lesion:</strong> Junção meniscocapsular PM, prevalência até 24% c/ lesão LCA; RM Se ~65–72% — procurar activamente via portal PM. <strong>Radial periférica:</strong> Se zona vascular, reparável com sutura horizontal (mattress). <strong>Degenerativas:</strong> Conservador 3–6m = 1ª linha (ESSKA 2016/2024; OMEX 10a; FIDELITY; DREAM).',
  opts:[
   {v:'intact',l:'Menisco íntegro',d:'Sem lesão meniscal medial.'},
-  {v:'rps',l:'Root Tipo 1 — Parcial estável',d:'Footprint com continuidade, extrusão < 3 mm.'},
-  {v:'rpu',l:'Root Tipo 1 — Parcial instável',d:'Progressão, instabilidade, falência conservador.'},
-  {v:'ra',l:'Root Tipos 2–5 — Completa aguda (< 3m)',d:'Ghost sign +. Tecido boa qualidade.'},
-  {v:'rc',l:'Root Tipos 2–5 — Completa crónica (> 3m)',d:'Retracção meniscal. Release capsular necessário.'},
-  {v:'ri',l:'Root Tipos 7–8 — Irreparável',d:'Degenerescência/perda substância.'},
-  {v:'flap',l:'Degenerativa — Flap/aba instável',d:'Fragmento móvel → catching, pseudobloqueio. Indicação meniscectomia parcial selectiva.'},
-  {v:'horiz',l:'Degenerativa — Horizontal',d:'Plano horizontal. Frequentemente assintomática. Quisto parameniscal possível.'},
-  {v:'complex',l:'Degenerativa — Complexa',d:'Múltiplos planos. Avaliar componentes reparáveis vs irrecuperáveis.'},
-  {v:'cyst',l:'Quisto parameniscal medial',d:'Massa interlinha + rotura horizontal associada.'},
-  {v:'trauma_rep',l:'Traumática reparável (longitudinal periférica)',d:'Zona red-red/red-white. Indicação reparação.'},
-  {v:'bh',l:'Bucket-handle deslocado',d:'Bloqueio mecânico verdadeiro. Urgência relativa.'}
+  {v:'rps',l:'Root Tipo 1 — Parcial estável',d:'Footprint com continuidade parcial. Extrusão < 3 mm. ~7% das root tears.'},
+  {v:'rpu',l:'Root Tipo 1 — Parcial instável',d:'Continuidade parcial mas progressão documentada, instabilidade ou falência conservador.'},
+  {v:'ra',l:'Root Tipos 2–5 — Completa aguda (< 3m)',d:'Ghost sign + na RM. Tecido boa qualidade. Reparação precoce = melhor prognóstico.'},
+  {v:'rc',l:'Root Tipos 2–5 — Completa crónica (> 3m)',d:'Retracção meniscal. Release capsular extenso necessário. Verificar viabilidade tecidular intra-op.'},
+  {v:'ri',l:'Root Tipos 7–8 — Irreparável / extensa',d:'Degenerescência tecidular, perda substância. Considerar reconstrução gracilis + centralização.'},
+  {v:'ramp',l:'Ramp lesion (meniscocapsular PM)',d:'Rotura junção meniscocapsular postero-medial. Frequente c/ lesão LCA (até 24%). RM pouco sensível — diagnosticar artroscopicamente (portal PM).'},
+  {v:'trauma_rep',l:'Traumática reparável — Longitudinal periférica',d:'Vertical, zona red-red/red-white. Padrão clássico de reparação. Indicação: preservar menisco.'},
+  {v:'radial_rep',l:'Traumática reparável — Radial periférica',d:'Radial incompleta na zona vascular periférica. Sutura horizontal (mattress) para restaurar hoop stresses. Na zona avascular → meniscectomia selectiva.'},
+  {v:'bh',l:'Bucket-handle deslocado',d:'Bloqueio mecânico verdadeiro. Urgência relativa. Reparar mesmo se crónico/≥60a se tecido viável (ESSKA 2019).'},
+  {v:'flap',l:'Degenerativa — Flap/aba instável',d:'Fragmento móvel → catching, pseudobloqueio. Conservador 3–6m primeiro. Se sintomas mecânicos persistentes → meniscectomia parcial selectiva.'},
+  {v:'horiz',l:'Degenerativa — Horizontal',d:'Plano horizontal. Frequentemente assintomática. Quisto parameniscal possível (mecanismo válvula one-way).'},
+  {v:'complex',l:'Degenerativa — Complexa',d:'Múltiplos planos. Avaliar componentes na zona vascular (reparáveis) vs avascular (irrecuperáveis). Conservador 3–6m primeiro.'},
+  {v:'cyst',l:'Quisto parameniscal medial',d:'Massa interlinha + rotura horizontal associada. Tratar a "válvula" (rotura), não o "balão" (quisto).'}
 ]},
-{id:'align',title:'Alinhamento — Análise da Deformidade',type:'single',
- q:'Ângulo HKA mecânico (telemetria bipodal em carga, patellas para a frente):',
- classRef:'<strong>HKA mecânico:</strong> Ângulo entre eixos mecânicos do fémur e tíbia. Normal: ~180° (1–1.3° varo). Varo = HKA < 180°. Valgo = HKA > 180°. Todos os valores abaixo referem-se ao desvio em varo a partir de 180° (ex: HKA 175° = 5° varo). <strong>Nota:</strong> Medir em telemetria bipodal em carga, com limbs correctamente rodados. RX AP standard do joelho NÃO permite medir o eixo mecânico com precisão.',
- opts:[
-  {v:'neutral',l:'Neutro / Valgo (HKA ≥ 178°)',d:'Desvio varo < 2°. Sem sobrecarga medial significativa.'},
-  {v:'mild',l:'Varo ligeiro (HKA 175°–178°, desvio 2°–5°)',d:'Sobrecarga medial ligeira. Pode não necessitar correcção isolada.'},
-  {v:'mod',l:'Varo moderado (HKA 170°–175°, desvio 5°–10°)',d:'Sobrecarga significativa. Indicação para osteotomia se preservação.'},
-  {v:'sev',l:'Varo severo (HKA < 170°, desvio > 10°)',d:'Deformidade major. Ponderar osteotomia dupla se single-level exceder limites JLO.'}
-]},
-{id:'deformity',title:'Local da Deformidade — MPTA / mLDFA / JLCA',type:'single',
- q:'Análise segmentar da deformidade (telemetria):',
- classRef:'<strong>Análise de Paley:</strong> Medir MPTA (ângulo mecânico proximal tibial medial, N: 87°±3°, range 85–90°) e mLDFA (ângulo mecânico distal femoral lateral, N: 88°±3°, range 85–90°). Se MPTA < 85° → deformidade tibial. Se mLDFA > 90° → deformidade femoral. <strong>JLCA</strong> (convergência articular, N: 0–2°): > 2° indica deformidade intra-articular ou laxidez — descontar do planeamento para evitar sobrecorrecção. <strong>Fórmula Micicoi:</strong> Correcção JLCA = (JLCA – 2) / 2. <strong>DLO:</strong> Considerar se MPTA simulado pós-op > 94° ou JLO > 5° (Babis, Schröter).',
- opts:[
-  {v:'tibial',l:'Deformidade tibial (MPTA < 85°, mLDFA normal)',d:'Origem da deformidade na tíbia proximal → HTO (OWHTO medial opening wedge). Indicação clássica.'},
-  {v:'femoral',l:'Deformidade femoral (mLDFA > 90°, MPTA normal)',d:'Origem da deformidade no fémur distal → DFO (osteotomia femoral distal, lateral closing wedge ou medial opening).'},
-  {v:'combined',l:'Deformidade combinada (MPTA < 85° + mLDFA > 90°)',d:'Deformidade em ambos os segmentos → considerar DLO (dupla osteotomia) para evitar JLO excessiva.'},
-  {v:'jlca_high',l:'JLCA > 6° (deformidade intra-articular dominante)',d:'Convergência articular alta (> 6° = tipping point). HTO isolada pode sobrecorrigir. Considerar: DLO, osteotomia condiliana proximal, ou UKA se artrose avançada.'},
-  {v:'normal',l:'Alinhamento normal / sem indicação osteotomia',d:'MPTA e mLDFA dentro dos limites normais. JLCA ≤ 2°. Sem indicação para osteotomia.'},
-  {v:'not_available',l:'Não avaliado / não aplicável',d:'Telemetria não disponível ou alinhamento não relevante para a decisão actual.'}
-]},
+{id:'deform',title:'Análise da Deformidade',type:'custom_deformity',
+ q:'Introduza os valores medidos na telemetria bipodal em carga (ângulos mecânicos):',
+ classRef:'<strong>Todos os ângulos são MECÂNICOS</strong> (eixo centro cabeça femoral → centro joelho → centro tornozelo). <strong>HKA mec.:</strong> 180° = neutro; <180° = varo; >180° = valgo. <strong>mMPTA:</strong> normal 87°±3° (85–90°). Se <84° → deformidade tibial. <strong>mLDFA:</strong> normal 87°±3° (85–90°). Se >90° → deformidade femoral (Paley). <strong>JLCA:</strong> normal 0–2°. >2° → deformidade intra-articular ou laxidez colateral — descontar do planeamento para evitar sobrecorrecção. <strong>Fórmula Micicoi/Kley:</strong> Correcção JLCA estimada = (JLCA – 2) / 2. <strong>DLO:</strong> Considerar se MPTA simulado pós-op > 94° ou JLO prevista > 5° (Babis 2002; Schröter 2017). <strong>Telemetria:</strong> Bipodal em carga, patellas para a frente, membros correctamente rodados (UK KOG 2021; Osteotomy Consensus 2022).'},
 {id:'acl',title:'LCA',type:'single',q:'Estado do LCA:',
  opts:[
   {v:'ok',l:'LCA competente',d:'Lachman neg, pivot-shift neg.'},
@@ -257,23 +228,9 @@ const FOLLOWUP=[
   {v:'fixed',l:'Flexo > 15° / deformidade fixa',d:'CI PUC → PTJ.'},
   {v:'men_lat',l:'Lesão menisco lateral',d:''}
 ]},
-{id:'proms',title:'PROMs — Oxford Knee Score',type:'custom_oks',
- q:'Preencha as 12 perguntas do Oxford Knee Score (referentes às últimas 4 semanas):',
- classRef:'<strong>OKS:</strong> 0–48 (48=melhor). < 20 = severo. 20–29 = moderado. 30–39 = ligeiro. ≥ 40 = bom. MCID: 5 pontos. <strong>Limiares cirurgia:</strong> OKS < 27 → indicação provável. Correlação com KOOS: KOOS-QoL < 41 → limiar falência; > 62 → sucesso. WOMAC-Dor > 7/20 → indicação.',
- oksQuestions:[
-  {q:'Como descreveria a dor que habitualmente sente no joelho?',opts:['Nenhuma','Muito ligeira','Ligeira','Moderada','Intensa']},
-  {q:'Tem tido dificuldade em lavar-se e secar-se (da cintura para baixo) por causa do joelho?',opts:['Nenhuma','Muito pouca','Moderada','Extrema dificuldade','Impossível']},
-  {q:'Tem tido dificuldade em entrar e sair de um carro ou usar transportes públicos por causa do joelho?',opts:['Nenhuma','Muito pouca','Moderada','Extrema dificuldade','Impossível']},
-  {q:'Durante quanto tempo consegue andar antes de a dor no joelho se tornar intensa? (com ou sem bengala)',opts:['>30 minutos','16–30 minutos','5–15 minutos','Apenas em casa','Nem sequer em casa']},
-  {q:'Depois de se sentar à mesa para uma refeição, qual a dificuldade em levantar-se da cadeira?',opts:['Nenhuma','Pouca','Moderada','Muito difícil','Impossível']},
-  {q:'Coxeia por causa do joelho?',opts:['Raramente/nunca','Às vezes','Frequentemente','Quase sempre','Sempre']},
-  {q:'Consegue ajoelhar-se e voltar a levantar-se?',opts:['Sim, facilmente','Com alguma dificuldade','Com dificuldade moderada','Com extrema dificuldade','Não, impossível']},
-  {q:'É incomodado pela dor no joelho durante a noite na cama?',opts:['Nunca','1–2 noites','Algumas noites','Maioria das noites','Todas as noites']},
-  {q:'Quanto é que a dor no joelho interfere com o seu trabalho habitual (incluindo tarefas domésticas)?',opts:['Nada','Um pouco','Moderadamente','Muito','Totalmente']},
-  {q:'Sente que o joelho pode "ceder" ou falhar?',opts:['Nunca','Raramente','Às vezes','Frequentemente','Sempre']},
-  {q:'Consegue fazer as compras sozinho/a?',opts:['Sim, facilmente','Com alguma dificuldade','Com dificuldade moderada','Com extrema dificuldade','Não, impossível']},
-  {q:'Consegue descer um lance de escadas?',opts:['Sim, facilmente','Com alguma dificuldade','Com dificuldade moderada','Com extrema dificuldade','Não, impossível']}
- ]}
+{id:'proms',title:'PROMs — Oxford Knee Score',type:'custom_proms',
+ q:'Preencha o OKS (referente às últimas 4 semanas) ou avance:',
+ classRef:'<strong>OKS:</strong> 0–48 (48=melhor). <20 severo. 20–29 moderado. 30–39 ligeiro. ≥40 bom. MCID = 5 pts. <strong>Limiares:</strong> OKS <27 → indicação cirúrgica provável. Correlação: KOOS-QoL <41 → limiar falência; >62 → sucesso (Barahona 2024). WOMAC-Dor >7/20 → indicação. <strong>COSMIN 2021:</strong> OKS = Categoria A (suficiente em validade, fiabilidade e responsiveness).'}
 ];
 
 // ─── DYNAMIC SIGNS FOR 1st CONSULTATION ───
@@ -333,6 +290,9 @@ function decideFirst(a){
     ddx.push({name:'Rotura meniscal medial (corpo/corno/raiz)',prob:mp,
       keys:'Dor interlinha ± bloqueio. McMurray/Thessaly +. Agachamento → root tear.',
       exam:'RM joelho (protocolo meniscal, cortes finos raiz).'});
+    if(pat==='instab'||trig==='trauma_pivot') ddx.push({name:'Ramp lesion (meniscocapsular PM)',prob:'possible',
+      keys:'Dor postero-medial + instabilidade. Até 24% c/ lesão LCA. RM Se ~65–72% — subdiagnosticada. Procurar artroscopicamente via portal PM.',
+      exam:'RM (cortes sagitais e coronais PM). Artroscopia diagnóstica via portal PM se alta suspeita.'});
     if(hasSg('med_cyst')) ddx.push({name:'Quisto parameniscal medial',prob:'likely',
       keys:'Massa palpável interlinha (patognomónico). Associado a rotura horizontal.',
       exam:'RM: quisto + rotura meniscal subjacente. Eco complementar.'});
@@ -395,6 +355,15 @@ function decideFirst(a){
     keys:'Lachman +, Pivot shift + (mais específico), Lever sign +. Trauma rotacional, pop, derrame agudo.',
     exam:'RM mandatória: LCA parcial/completa, meniscos, contusões ósseas, ligamentos.'});
 
+  // Fallback: always at least 1 DDx
+  if(ddx.length===0){
+    const fb={medial:{name:'Gonalgia medial inespecífica',keys:'Dor medial sem sinais patognomónicos. Ponderar artrose incipiente, meniscal degenerativa, tendinopatia anserina.',exam:'RX carga Schuss + Rosenberg + RM joelho.'},
+      pf:{name:'Dor anterior do joelho',keys:'Retropatelar/peripatelar sem sinais específicos. Condromalácia, síndrome PF, tendinopatia.',exam:'RX axial Merchant + perfil carga. Eco tendão rotuliano.'},
+      lateral:{name:'Gonalgia lateral inespecífica',keys:'Dor lateral sem sinais patognomónicos. Meniscal, ITB, artrose lateral, PLC ligeiro.',exam:'RM joelho.'},
+      posterior:{name:'Dor posterior do joelho',keys:'Quisto Baker, tendinopatia isquiotibial, lesão LCP ligeira.',exam:'Eco poplítea + RM joelho.'},
+      diffuse:{name:'Gonalgia difusa',keys:'Mal localizada. Artrose multicompartimental, doença inflamatória, SIFK.',exam:'RX carga bilateral + analítica (VS, PCR, FR).'}};
+    ddx.push({...(fb[loc]||fb.diffuse),prob:'possible'});
+  }
   // Sort DDx
   const po={likely:0,possible:1};
   ddx.sort((a,b)=>(po[a.prob]||1)-(po[b.prob]||1));
@@ -421,12 +390,12 @@ function decideFirst(a){
 // ============================================================
 //  REAVALIAÇÃO — DECISION ENGINE (expanded from v4)
 // ============================================================
-function decideFollowup(a){
-  const C=a.cart,M=a.menisc,AL=a.align,DEF=a.deformity||'not_available',ACL=a.acl,P=a.profile,AS=a.assoc||[],PR=a.proms;
+function decideFU(a){
+  const C=a.cart,M=a.menisc,AL=a.align||'neutral',ACL=a.acl,P=a.profile,AS=a.assoc||[],PR=a.proms;
+  const dd=a.deformData||{};
   const oksScore=typeof a.oks_score==='number'?a.oks_score:null;
   const varus=AL==='mod'||AL==='sev', anyVar=AL==='mild'||varus;
-  const needsOsteotomy=varus&&DEF!=='normal'&&DEF!=='not_available';
-  const tibialDef=DEF==='tibial', femoralDef=DEF==='femoral', combinedDef=DEF==='combined', jlcaHigh=DEF==='jlca_high';
+  const hasDeformAnalysis=dd.hasMPTA||dd.hasLDFA;
   const aclDef=ACL==='def', young=P==='young', old=P==='older'||P==='comorbid';
   const ha=v=>AS.includes(v);
   const multi=ha('pf_severe')||ha('lat'), ptjAbs=ha('inflam')||ha('fixed');
@@ -438,14 +407,16 @@ function decideFollowup(a){
   } else if(PR&&PR!=='skip'){
     pn=`<div class="note"><strong>PROMs:</strong> ${PR==='severe'?'OKS<20 — severo.':PR==='moderate'?'OKS 20–27 — moderado.':PR==='mild'?'OKS 28–35 — ligeiro.':'OKS>35 — bom.'}</div>`;
   }
-  // Osteotomy site note
-  const osteoNote=needsOsteotomy?`<div class="note"><strong>Local da osteotomia (análise deformidade):</strong> ${
-    tibialDef?'Deformidade tibial (MPTA < 85°) → <strong>OWHTO</strong> (medial opening wedge). Alvo: MPTA pós-op ≤ 94° e JLO < 5°.':
-    femoralDef?'Deformidade femoral (mLDFA > 90°) → <strong>DFO</strong> (osteotomia femoral distal). Não corrigir na tíbia — criaria obliquidade articular excessiva.':
-    combinedDef?'Deformidade combinada (tíbia + fémur) → <strong>Osteotomia dupla (DLO)</strong>. OWHTO + DFO closing lateral para manter JLO < 5° e MPTA < 94° (Babis: sobrevida 96% a 100m). Navegação intra-op recomendada (Saragaglia).':
-    jlcaHigh?'JLCA > 6° (tipping point) → deformidade intra-articular dominante. HTO isolada tem risco elevado de sobrecorrecção. Opções: (1) DLO, (2) osteotomia condiliana proximal, (3) correcção gradual com fixador externo, (4) descontar JLCA: fórmula Micicoi (JLCA–2)/2.':
-    'Avaliação segmentar não disponível — medir MPTA e mLDFA para planeamento preciso.'
-  }</div>`:'';
+  // Osteotomy label + site note (from numeric deformity analysis)
+  const osteoLabel=(!hasDeformAnalysis)?'Osteotomia':dd.osteoSite==='dfo'?'DFO':dd.osteoSite==='dlo'?'DLO':'OWHTO';
+  let osteoNote='';
+  if(varus||anyVar){
+    if(hasDeformAnalysis){
+      osteoNote='<div class="note"><strong>Análise deformidade (ângulos mecânicos):</strong> HKA '+dd.hka+'° · Varo '+dd.varusTotal.toFixed(1)+'°'+(dd.hasMPTA?' · mMPTA '+dd.mpta+'°':'')+(dd.hasLDFA?' · mLDFA '+dd.mldfa+'°':'')+(dd.hasJLCA?' · JLCA '+dd.jlca+'°':'')+'<br><strong>Local:</strong> '+dd.osteoReason+'<br>'+(dd.hasMPTA&&dd.simMPTA?'<strong>MPTA simulado pós-HTO:</strong> '+dd.simMPTA.toFixed(1)+'°'+(dd.simMPTA>95?' ⚠ >95° — JLO excessiva → DLO':dd.simMPTA>94?' ⚠ limítrofe (>94°)':' ✓ aceitável')+'<br>':'')+(dd.jlcaNote?'<strong>JLCA:</strong> '+dd.jlcaNote+'<br>':'')+'<strong>Alvo:</strong> WBL 50–62% platô · MPTA ≤94° · JLO <5° (Consensus 2022 Grau B).</div>';
+    } else if(dd.hka){
+      osteoNote='<div class="note"><strong>HKA mec.: '+dd.hka+'° (varo '+dd.varusTotal.toFixed(1)+'°).</strong> mMPTA e mLDFA não disponíveis — <strong>essenciais para definir local osteotomia</strong>: se mMPTA <84° → HTO; se mLDFA >90° → DFO; ambos alterados → DLO. Se MPTA simulado >95° → DLO (Babis 2002; Schröter). Medir na telemetria.</div>';
+    }
+  }
   const mk=(cat,t,b,r)=>({cat,title:t,body:b+osteoNote+pn,refs:r});
 
   // ── ABSOLUTE PTJ ──
@@ -454,24 +425,53 @@ function decideFollowup(a){
   if((C==='kl4'||C==='kl3')&&multi) return mk('ptj','PTJ — Multicompartimental',`KL ${C.slice(2)} + ${ha('pf_severe')?'PF severa':''}${ha('lat')?' + lateral':''}. Exclui PUC.`,'AAOS 2024.');
 
   // ── BUCKET-HANDLE URGENCY ──
-  if(M==='bh') return mk('repair','Reparação Meniscal Urgente (Bucket-Handle)'+(aclDef?' + Rec. LCA':''),
-    `<strong>Bucket-handle deslocado — urgência relativa.</strong>
-<ul><li>Redução artroscópica + reparação (all-inside/inside-out, ≥ 3–4 suturas verticais)</li>
-<li>Melhor prognóstico se < 3 semanas. Se tecido degenerado → meniscectomia selectiva</li>
-${aclDef?'<li class="warn"><strong>LCA def:</strong> Rec. concomitante ↑ sucesso (60%→85%).</li>':''}
-${varus?'<li>Varo: HTO concomitante/staged para proteger reparação.</li>':''}
-</ul><div class="note"><strong>Pós-op:</strong> 6 sem. s/carga, ROM 0–90° 4 sem.</div>`,
-    'ESSKA Meniscus 2024.');
+  if(M==='bh') return mk('repair','Reparação Meniscal Urgente (Bucket-Handle)'+(aclDef?' + Rec. LCA':'')+(varus?' + '+osteoLabel:''),
+    `<strong>Bucket-handle deslocado — urgência relativa. Reparar, não ressecar.</strong>
+<ul><li>Redução artroscópica + reparação (all-inside/inside-out, ≥ 3–4 suturas verticais, 1 sutura/5mm)</li>
+<li><strong>Timing:</strong> Idealmente < 3 semanas. Prognóstico melhor se precoce. Rotura crónica não é CI se tecido viável.</li>
+<li><strong>Idade:</strong> Reparar mesmo ≥ 60a se tecido não degenerado — sucesso clínico ~78% (Deichsel AJSM 2024).</li>
+<li>Se tecido degenerado intra-op / multi-fragmentário irreparável → meniscectomia selectiva conservadora.</li>
+${aclDef?'<li class="warn"><strong>LCA def:</strong> Rec. concomitante obrigatória — re-rotura 2× sem LCA funcional (taxa sucesso 60%→85% c/ LCA).</li>':''}
+${varus?`<li><strong>Varo:</strong> ${osteoLabel} concomitante/staged protege reparação (sobrecarga medial ${anyVar?'presente':'possível'}).</li>`:''}
+${(C==='kl3'||C==='kl4')?'<li class="warn"><strong>KL '+C.slice(2)+':</strong> Artrose avançada compromete resultado. Ponderar artroplastia se dor de carga domina sobre bloqueio.</li>':''}
+</ul><div class="note"><strong>ESSKA 2019:</strong> "Numerosas roturas consideradas irreparáveis devem ser reparadas — roturas antigas, em obesos, roturas longas." <strong>Pós-op:</strong> 6 sem s/carga, ROM 0–90° 4 sem. Desporto 4–6m.</div>`,
+    'ESSKA 2019/2024; Deichsel AJSM 2024.');
 
-  // ── TRAUMATIC REPAIRABLE ──
-  if(M==='trauma_rep') return mk('repair','Reparação Meniscal'+(aclDef?' + Rec. LCA':'')+(varus?' + HTO':''),
+  // ── TRAUMATIC REPAIRABLE (LONGITUDINAL) ──
+  if(M==='trauma_rep') return mk('repair','Reparação Meniscal'+(aclDef?' + Rec. LCA':'')+(varus?' + '+osteoLabel:''),
     `<strong>Longitudinal periférica reparável (red-red/red-white).</strong>
-<ul><li>All-inside (suturas verticais) ou inside-out. 1 sutura/5mm.</li>
-<li>Abrasão margens. Sucesso ~85% se <40a + cartilagem preservada + LCA funcional.</li>
-${aclDef?'<li class="warn"><strong>LCA def:</strong> Rec. concomitante obrigatória — re-rotura 2× sem LCA.</li>':''}
-${(C==='kl3'||C==='kl4')?'<li class="warn">Artrose avançada compromete resultados. Ponderar artroplastia se KL 4.</li>':''}
-</ul><div class="note"><strong>Pós-op:</strong> 6 sem. s/carga. Desporto 4–6m.</div>`,
-    'ESSKA 2024; Fillingham 2019.');
+<ul><li><strong>Técnica:</strong> All-inside (suturas verticais) ou inside-out. Mínimo 1 sutura/5mm. Abrasão margens p/ estimular cicatrização.</li>
+<li><strong>Sucesso:</strong> ~85% se <40a + cartilagem preservada + LCA funcional. Mas idade ≥60a não é CI se tecido viável (sucesso ~78%, Deichsel 2024).</li>
+<li><strong>Timing:</strong> Quanto mais precoce, melhor. Roturas crónicas reparáveis se tecido não degenerado (ESSKA 2019).</li>
+${aclDef?'<li class="warn"><strong>LCA def:</strong> Rec. concomitante obrigatória — re-rotura 2× sem LCA funcional.</li>':''}
+${varus?`<li><strong>Varo:</strong> ${osteoLabel} concomitante protege reparação em varo significativo.</li>`:''}
+${(C==='kl3'||C==='kl4')?'<li class="warn">Artrose avançada (KL '+C.slice(2)+') compromete resultados. Ponderar se reparação vale a pena vs artroplastia.</li>':''}
+</ul><div class="note"><strong>ESSKA 2019:</strong> Preservação = 1ª linha. Resultados clínicos e radiológicos a longo prazo piores após meniscectomia parcial vs reparação. <strong>Pós-op:</strong> 6 sem s/carga, ROM 0–90°. Desporto 4–6m.</div>`,
+    'ESSKA 2019/2024; Deichsel AJSM 2024.');
+
+  // ── RAMP LESION ──
+  if(M==='ramp') return mk('repair','Reparação Ramp Lesion'+(aclDef?' + Rec. LCA':'')+(varus?' + '+osteoLabel:''),
+    `<strong>Ramp lesion — rotura meniscocapsular postero-medial.</strong>
+<ul><li><strong>Diagnóstico:</strong> RM tem sensibilidade limitada (~65–72%). Procurar activamente via portal postero-medial artroscópico. Prevalência até 24% em rec. LCA.</li>
+<li><strong>Classificação (Thaunat):</strong> Tipo 1 (meniscocapsular periférica) vs Tipo 2 (membrana sinovial + meniscocapsular) vs superiores (envolvem corno posterior).</li>
+<li><strong>Técnica:</strong> Suturas all-inside (dispositivos específicos PM) ou sutura a céu aberto PM se necessário. Portal PM acessório para visualização.</li>
+<li><strong>Reparar SEMPRE</strong> se identificada durante rec. LCA — taxa cicatrização >90% na presença de LCA funcional.</li>
+${aclDef?'<li class="warn"><strong>LCA def:</strong> Ramp lesion frequentemente associada. Rec. LCA concomitante obrigatória — ramp não cicatriza em joelho instável.</li>':''}
+${!aclDef?'<li><strong>Isolada (sem lesão LCA):</strong> Raro. Reparar se sintomática (dor PM, efusão recorrente, instabilidade rotacional). Conservador se estável e assintomática.</li>':''}
+${varus?`<li>Varo: ${osteoLabel} concomitante se indicado pelo alinhamento.</li>`:''}
+</ul><div class="note"><strong>Pós-op:</strong> Similar a reparação meniscal — 6 sem carga parcial. ROM progressiva. Desporto 4–6m.</div>`,
+    'Thaunat 2016; Siboni Curr Rev 2023; ESSKA 2019/2024.');
+
+  // ── RADIAL PERIPHERAL (REPAIRABLE) ──
+  if(M==='radial_rep') return mk('repair','Reparação Radial'+(aclDef?' + Rec. LCA':'')+(varus?' + '+osteoLabel:''),
+    `<strong>Rotura radial periférica — zona vascular reparável.</strong>
+<ul><li><strong>Indicação:</strong> Radial incompleta na zona red-red/red-white. Restaura parcialmente hoop stresses se sutura horizontal (mattress) eficaz.</li>
+<li><strong>Técnica:</strong> Suturas horizontais (mattress) cruzando plano da rotura. ≥ 2 suturas. Abrasão margens.</li>
+<li><strong>Limitações:</strong> Radial completa na zona avascular (white-white) = mau potencial cicatrização → meniscectomia selectiva limitada ao tecido instável. Se radial completa atinge a raiz → classificar como root tear.</li>
+${aclDef?'<li class="warn">LCA def: Rec. concomitante — instabilidade compromete cicatrização.</li>':''}
+${varus?`<li>Varo: ${osteoLabel} concomitante protege reparação.</li>`:''}
+</ul><div class="note"><strong>Evidência:</strong> Séries pequenas. Cicatrização inferior a longitudinal (~70% vs ~85%). Justifica-se pelo princípio de preservação meniscal. <strong>Pós-op:</strong> 6 sem s/carga.</div>`,
+    'ESSKA 2019; Matsubara KSSTA 2019.');
 
   // ── PARAMENISCAL CYST ──
   if(M==='cyst'){
@@ -493,16 +493,17 @@ ${C==='kl3'||C==='kl4'?'<li>Artrose significativa: ponderar se quisto causa sint
   // ── DEGENERATIVE FLAP (MECHANICAL SYMPTOMS) ──
   if(M==='flap'){
     if(C==='kl4') return mk('puc','PUC (KL4 + flap)',`Artrose avançada + flap — artroplastia resolve ambos. Meniscectomia isolada KL4: NNT=50.`,'OMEX 2024.');
-    return mk('repair','Meniscectomia Parcial Selectiva'+(varus&&young?' + HTO':'')+(aclDef?' + Rec. LCA':''),
+    return mk('repair','Meniscectomia Parcial Selectiva'+(varus&&young?' + '+osteoLabel:'')+(aclDef?' + Rec. LCA':''),
     `<strong>Flap/aba instável + sintomas mecânicos.</strong>
-<ul><li><strong>Indicação:</strong> Pseudobloqueio/catching persistente após conservador ≥ 3 meses.</li>
-<li><strong>Técnica:</strong> Ressecar APENAS tecido instável (flap). Preservar rim periférico máximo.</li>
-<li><strong>Atenção:</strong> Sem sintomas mecânicos → meniscectomia NÃO superior a conservador (OMEX 10a; FIDELITY; ESCAPE).</li>
-${varus?'<li>Varo + jovem: HTO concomitante — meniscectomia em varo acelera artrose.</li>':''}
-${aclDef?'<li class="warn">LCA def pode ser causa → reconstruir antes de meniscectomia.</li>':''}
-${C==='kl3'?'<li>KL 3: ponderar se bloqueio é causa principal vs dor de carga (→ PUC).</li>':''}
-</ul><div class="note"><strong>Critérios:</strong> (1) Sintomas mecânicos, (2) Falência conservador ≥3m, (3) Correlação RM-clínica, (4) KL ≤2 = melhor resultado.<br><strong>Pós-op:</strong> Carga imediata. Desporto 4–6 sem.</div>`,
-    'OMEX 10y 2024; ESSKA 2024; FIDELITY 2020.');
+<ul><li><strong>ESSKA 2016/2024 — 1ª linha:</strong> Conservador 3–6 meses (fisioterapia, reforço muscular, perda ponderal, infiltrações). Meniscectomia parcial = 2ª linha.</li>
+<li><strong>Indicação cirúrgica:</strong> Pseudobloqueio/catching PERSISTENTE após conservador ≥ 3 meses + correlação RM-clínica.</li>
+<li><strong>Técnica:</strong> Ressecar APENAS tecido instável (flap). Preservar rim periférico máximo. Evitar meniscectomia extensa.</li>
+<li><strong>Evidência:</strong> Sem sintomas mecânicos → meniscectomia NÃO superior a conservador (OMEX 10a: resultados equivalentes; FIDELITY: sem benefício; DREAM 2024: treino neuromuscular = cirurgia em roturas traumáticas estáveis).</li>
+${varus?'<li>Varo + jovem: '+osteoLabel+' concomitante — meniscectomia em varo acelera artrose (cada 1° varo = +5% carga medial).</li>':''}
+${aclDef?'<li class="warn">LCA def pode ser causa do catching → reconstruir antes de meniscectomia.</li>':''}
+${C==='kl3'?'<li>KL 3: ponderar se bloqueio mecânico é causa principal vs dor artrótica de carga (→ PUC se dor domina).</li>':''}
+</ul><div class="note"><strong>Critérios cirúrgicos:</strong> (1) Sintomas mecânicos, (2) Falência conservador ≥3m, (3) Correlação RM-clínica, (4) KL ≤2 = melhor resultado. <strong>Pós-op:</strong> Carga imediata. Desporto 4–6 sem.</div>`,
+    'OMEX 10y 2024; ESSKA 2016/2024; FIDELITY 2020; DREAM 2024.');
   }
 
   // ── DEGENERATIVE HORIZONTAL ──
@@ -510,23 +511,31 @@ ${C==='kl3'?'<li>KL 3: ponderar se bloqueio é causa principal vs dor de carga (
     if(C==='kl4') return mk('puc','PUC Medial','KL 4 + horizontal degenerativa → artroplastia.','AAOS 2024.');
     return mk('conserv','Conservador (Horizontal Degenerativa)',
     `<strong>Rotura horizontal degenerativa sem aba instável.</strong>
-<ul><li>Maioria assintomática ou responde a conservador.</li>
+<ul><li><strong>ESSKA 2016/2024:</strong> Maioria assintomática ou responde a conservador. Fisioterapia = 1ª linha 3–6 meses.</li>
 <li>Reabilitação + controlo ponderal + infiltrações (corticóide/ác. hialurónico).</li>
-<li>Se quisto associado → reclassificar como "Quisto parameniscal".</li>
-<li><strong>Cirurgia:</strong> Apenas se sintomas persistentes > 3–6m. Single-leaf resection.</li></ul>`,
-    'OMEX 2024; ESSKA 2024.');
+<li>Se quisto parameniscal associado → reclassificar e tratar como "Quisto parameniscal".</li>
+<li><strong>Cirurgia</strong> (apenas se sintomas mecânicos persistentes > 3–6m): Single-leaf resection da folha instável. Preservar folha estável/periférica.</li>
+<li><strong>Reparação:</strong> Raramente indicada na horizontal degenerativa (tecido sem potencial de cicatrização). Exceção: se zona vascular periférica e tecido viável.</li></ul>`,
+    'ESSKA 2016/2024; OMEX 10y 2024.');
   }
 
   // ── DEGENERATIVE COMPLEX ──
   if(M==='complex'){
     if(C==='kl4') return mk('puc','PUC','KL 4 + complexa → artroplastia.','AAOS 2024.');
     if(C==='kl3'&&(old||!varus)) return mk('puc','PUC','KL 3 + complexa + perfil artroplastia.','AAOS 2024.');
-    return mk('repair','Artroscopia: Avaliação + Meniscectomia Selectiva'+(young&&varus?' + HTO':''),
-    `<strong>Complexa (múltiplos planos).</strong>
-<ul><li>Avaliar artroscopicamente: componentes instáveis vs reparáveis.</li>
-<li>Meniscectomia parcial selectiva do instável + reparar zona vascular.</li>
-${young&&varus?'<li>Jovem + varo: HTO protege. Considerar transplante meniscal futuro se extensa.</li>':''}
-</ul>`, 'ESSKA 2024.');
+    return mk('repair','Artroscopia: Avaliação + Meniscectomia Selectiva ± Reparação'+(young&&varus?' + '+osteoLabel:''),
+    `<strong>Complexa (múltiplos planos) — avaliação artroscópica mandatória.</strong>
+<ul><li><strong>ESSKA 2016/2024:</strong> Conservador 3–6 meses primeiro. Cirurgia apenas se sintomas mecânicos persistentes.</li>
+<li><strong>Artroscopia:</strong> Avaliar cada componente individualmente:
+  <ul style="margin-top:4px;margin-bottom:4px">
+  <li>Componentes na zona vascular (red-red/red-white) → <strong>reparar</strong> se possível (longitudinal/radial periférica)</li>
+  <li>Componentes na zona avascular com instabilidade → meniscectomia selectiva (APENAS o instável)</li>
+  <li>Componentes estáveis assintomáticos → deixar in situ</li>
+  </ul></li>
+<li><strong>Princípio:</strong> Preservar o máximo de tecido meniscal. Combinar reparação + resseção selectiva na mesma sessão.</li>
+${young&&varus?'<li>Jovem + varo: '+osteoLabel+' protege compartimento. Considerar transplante meniscal futuro se perda extensa pós-meniscectomia.</li>':''}
+${aclDef?'<li class="warn">LCA def: Rec. concomitante se instabilidade presente.</li>':''}
+</ul>`, 'ESSKA 2016/2024; AAOS 2024.');
   }
 
   // ── KL4 (sem lesão meniscal especial já tratada) ──
@@ -547,9 +556,9 @@ ${ha('sifk')?'<li>SIFK: boa indicação PUC.</li>':''}
     if(young&&varus){
       if(isRC){
         let t=M==='ri'?'Reconstrução Gracilis':'Pullout'+(M==='rc'?' + Release Capsular':'')+' + Centralização';
-        let ostType=femoralDef?'DFO':combinedDef?'DLO':'OWHTO';
-        return mk('combo',ostType+' + '+t+(aclDef?' + Rec. LCA':''),
-          `KL 3 + varo + jovem + root completa.<ul><li>${ostType} + ${t}</li>
+        
+        return mk('combo',osteoLabel+' + '+t+(aclDef?' + Rec. LCA':''),
+          `KL 3 + varo + jovem + root completa.<ul><li>${osteoLabel} + ${t}</li>
 <li>HTO protege reparação (Tokumoto 2025: IKDC SMD 0.31, p=0.04).</li>
 ${aclDef?'<li class="warn">Rec. LCA concomitante.</li>':''}
 </ul>`,'Tokumoto 2025; Singh 2025.');
@@ -579,18 +588,21 @@ ${aclDef?'<li class="warn">LCA def → favorece HTO + Rec. LCA sobre PUC.</li>':
   // ── KL 0–2 + ROOT COMPLETE ──
   if((C==='kl01'||C==='kl2')&&(M==='ra'||M==='rc'||M==='ri')){
     let p=[M==='ri'?'Reconstrução Root (Gracilis)':'Reparação Root + Centralização'];
-    if(varus)p.push('HTO');if(aclDef)p.push('Rec. LCA');
+    if(varus)p.push(osteoLabel);if(aclDef)p.push('Rec. LCA');
     let t=M==='ra'?'aguda — timing óptimo':M==='rc'?'crónica — release capsular necessário':'irreparável — gracilis';
     return mk('repair',p.join(' + '),
       `<strong>Root completa ${t}.</strong>
-<ul>${M!=='ri'?`<li>Pullout transtibial 2 simple sutures. Decorticação footprint.</li>
-<li>Centralização mandatória se extrusão > 3mm (âncoras knotless).</li>
-${M==='rc'?'<li>Release capsular posterior extenso (tesouras rotativas). Se intraop irreparável → gracilis.</li>':''}`:
-`<li>Autoenxerto gracilis (split/completo) pelo túnel transtibial.</li><li>Centralização concomitante.</li>`}
-${varus?'<li>HTO: protege reparação (Tokumoto 2025: IKDC SMD 0.31).</li>':''}
-${aclDef?'<li class="warn">Rec. LCA concomitante obrigatória. Planear túneis.</li>':''}
-</ul><div class="note"><strong>Pós-op:</strong> 6 sem. s/carga. ROM 0–90° desde D1. Conversão PTJ: 22% 10a (vs 56% meniscectomia).</div>`,
-    'Lee 2025; Bernard 2020; Deichsel 2024.');
+<ul>${M!=='ri'?`<li><strong>Técnica:</strong> Pullout transtibial com 2 simple sutures. Decorticação footprint para cicatrização fibrocartilaginosa.</li>
+<li><strong>Centralização mandatória</strong> se extrusão > 3mm — âncoras knotless no rim tibial ± reparação ligamento meniscotibial/MCL profundo. Técnica emergente que aborda a limitação principal da reparação da raiz (extrusão persistente, Krych 2024).</li>
+${M==='rc'?'<li>Release capsular posterior extenso (tesouras rotativas). Se intraop tecido inviável → converter p/ gracilis.</li>':''}`:
+`<li><strong>Reconstrução:</strong> Autoenxerto gracilis (split/completo) pelo túnel transtibial. Centralização concomitante.</li>`}
+<li><strong>Resultados (meta-análise ≥5a):</strong> Progressão OA: 22% reparação vs 66% meniscectomia (OR 0.17). Conversão PTJ: 9.8% vs 36% (OR 0.15). Sobrevida 10a: 79.6% vs 44.4%.</li>
+<li><strong>Custo-efectividade:</strong> Reparação é economicamente dominante a 10a ($22,590 vs $31,528 meniscectomia; Faucett AJSM 2019).</li>
+<li><strong>Idade:</strong> Reparar mesmo ≥ 60a se cartilagem preservada — sucesso ~78% (Deichsel 2024). Idade NÃO é CI per se.</li>
+${varus?`<li><strong>Varo:</strong> ${osteoLabel} concomitante protege reparação (Tokumoto 2025: IKDC SMD 0.31, p=0.04). HTO+Root > HTO isolada.</li>`:''}
+${aclDef?'<li class="warn"><strong>LCA def:</strong> Rec. concomitante obrigatória. Planear túneis p/ evitar conflito root-LCA.</li>':''}
+</ul><div class="note"><strong>Pós-op:</strong> 6 sem s/carga. ROM 0–90° desde D1. Carga progressiva 6–12 sem. Desporto 6–9m.</div>`,
+    'Lee Arthroscopy 2025; Faucett AJSM 2019; Deichsel AJSM 2024; Krych 2024; Tokumoto 2025.');
   }
 
   // ── KL 0–2 + ROOT PARTIAL ──
@@ -635,223 +647,254 @@ ${aclDef?'<li class="warn">Rec. LCA: prevenir lesão meniscal secundária.</li>'
   return mk('conserv','Avaliação Individualizada','Combinação requer avaliação individualizada.','');
 }
 
-// ============================================================
-//  UI ENGINE
-// ============================================================
-function getSteps(){return pathway==='first'?FIRST:FOLLOWUP;}
 
+// ══════════════════════════════════════════════════
+// UI ENGINE — MAIN RENDER
+// ══════════════════════════════════════════════════
 function render(){
-  const tb=document.getElementById('topbar');
-  if(!pathway){
-    if(tb)tb.style.display='none';
-    return renderPathwaySel();
-  }
-  // Show topbar
-  if(tb){
-    tb.style.display='block';
-    document.getElementById('topbar-label').textContent=pathway==='first'?'1ª Consulta — Anamnese → DDx → Exames':'Reavaliação — Diagnóstico → Decisão Terapêutica';
-  }
-  const steps=getSteps();
-
-  // Dynamic signs for 1st consultation
-  if(pathway==='first'&&ans.loc&&ans.pattern){
+  const nav=$('nav'),lbl=$('nav-label');
+  if(!PW){nav.classList.remove('vis');return renderPWSel();}
+  nav.classList.add('vis');
+  lbl.textContent=PW==='first'?'1ª Consulta — Anamnese → DDx → Exames':'Reavaliação — Diagnóstico → Decisão Terapêutica';
+  const steps=PW==='first'?FC:FU;
+  if(PW==='first'&&ans.loc&&ans.pattern){
     const si=steps.findIndex(s=>s.id==='signs');
     if(si>=0) steps[si].opts=getSigns(ans.loc,ans.pattern);
   }
-
   let h='';
-
-  for(let i=0;i<=Math.min(cur,steps.length-1);i++){
-    const s=steps[i], done=isDone(s), active=i===cur;
-    let valTxt='';
+  for(let i=0;i<steps.length;i++){
+    const s=steps[i],done=isDone(s),active=i===cur;
+    if(!done&&!active) continue;
+    let vt='';
     if(done){
-      if(s.type==='multi'){valTxt=(ans[s.id+'_multi']||[]).map(v=>{const o=s.opts.find(x=>x.v===v);return o?o.l:'';}).join(', ');}
-      else if(s.type==='custom_oks'){valTxt=ans.oks_score!==null?`OKS ${ans.oks_score}/48`:'Sem PROMs';}
-      else{const o=s.opts.find(x=>x.v===ans[s.id]);valTxt=o?o.l:'';}
+      if(s.type==='multi'){vt=(ans[s.id+'_multi']||[]).map(v=>{const o=s.opts.find(x=>x.v===v);return o?o.l:'';}).join(', ');}
+      else if(s.type==='custom_deformity'){const d=ans.deformData||{};vt='HKA:'+(d.hka||'?')+'°'+(d.hasMPTA?' MPTA:'+d.mpta+'°':'')+(d.hasLDFA?' mLDFA:'+d.mldfa+'°':'');}
+      else if(s.type==='custom_proms'){vt=ans.oks_score!=null?'OKS: '+ans.oks_score+'/48':'Saltado';}
+      else{const o=s.opts.find(x=>x.v===ans[s.id]);vt=o?o.l:'';}
     }
-    h+=`<div class="step" style="animation-delay:${i*.04}s">
-      <div class="step-head">
-        <div class="sn ${done?'ok':active?'on':''}">${done?'✓':(i+1)}</div>
-        <div class="st">${s.title}</div>
-        ${done&&!active?`<div class="sv">${valTxt}</div><button class="s-edit" onclick="goTo(${i})">Alterar</button>`:''}
-      </div>
-      ${active?renderBody(s,i):''}
-    </div>`;
+    h+='<div class="step" style="animation-delay:'+i*.04+'s"><div class="step-head"><div class="sn '+(done?'ok':active?'on':'')+'">'+(done?'✓':(i+1))+'</div><div class="st">'+s.title+'</div>'+(done&&!active?'<div class="sv">'+vt+'</div><button class="s-edit" onclick="goTo('+i+')">Alterar</button>':'')+'</div>'+(active?renderBody(s,i):'')+'</div>';
   }
-
-  // RESULT
   if(cur>=steps.length){
-    if(pathway==='first'){
-      const r=decideFirst(ans);
-      h+=renderFirstResult(r);
-    } else {
-      const r=decideFollowup(ans);
-      h+=renderFollowupResult(r);
-    }
-    h+=`<div class="rbar"><button onclick="restart()">↻ Novo doente</button></div>`;
+    if(PW==='first') h+=renderFirstResult(decideFirst(ans));
+    else h+=renderFollowupResult(decideFU(ans));
   }
   $('app').innerHTML=h;
-  if(cur>0) setTimeout(()=>{const els=document.querySelectorAll('.step,.result,.exam-panel');if(els.length)els[els.length-1].scrollIntoView({behavior:'smooth',block:'center'});},80);
+  if(cur>0)setTimeout(function(){var e=document.querySelectorAll('.step,.result');if(e.length)e[e.length-1].scrollIntoView({behavior:'smooth',block:'center'});},80);
 }
 
-function renderPathwaySel(){
-  const tb=document.getElementById('topbar');
-  if(tb)tb.style.display='none';
-  $('app').innerHTML=`<div class="path-sel">
-    <div class="path-card" onclick="setPathway('first')">
-      <div class="path-icon">🔍</div>
-      <div class="path-title">1ª Consulta</div>
-      <div class="path-desc">Anamnese → exame objectivo → diagnósticos diferenciais → exames a pedir.<br>Para quando ainda não tem diagnóstico confirmado.</div>
-    </div>
-    <div class="path-card" onclick="setPathway('followup')">
-      <div class="path-icon">📋</div>
-      <div class="path-title">Reavaliação</div>
-      <div class="path-desc">Resultados de exames → decisão terapêutica.<br>Para quando tem diagnóstico e quer decidir tratamento.</div>
-    </div>
-  </div>`;
-}
+function renderPWSel(){$('app').innerHTML='<div class="path-sel"><div class="path-card" onclick="setPW(\'first\')"><div class="path-icon">🔍</div><div class="path-title">1ª Consulta</div><div class="path-desc">Anamnese → exame objectivo → diagnósticos diferenciais → exames a pedir.</div></div><div class="path-card" onclick="setPW(\'followup\')"><div class="path-icon">📋</div><div class="path-title">Reavaliação</div><div class="path-desc">Resultados exames → decisão terapêutica (HTO/DFO/DLO/PUC/PTJ/reparação meniscal).</div></div></div>';}
 
 function renderBody(s,i){
+  if(s.type==='custom_deformity') return renderDeformity(s,i);
+  if(s.type==='custom_proms') return renderPROMs(s,i);
   if(s.type==='multi') return renderMulti(s,i);
-  if(s.type==='custom_oks') return renderOKS(s,i);
-  return `<div class="step-body">
-    <div class="q">${s.q}</div>
-    ${s.classRef?`<div class="cref">${s.classRef}</div>`:''}
-    <div class="opts" style="margin-top:10px">${s.opts.map(o=>`
-      <div class="opt ${ans[s.id]===o.v?'sel':''}" onclick="pick('${s.id}','${o.v}',${i})">
-        <div class="orad"></div>
-        <div><div class="ol">${o.l}</div>${o.d?`<div class="od">${o.d}</div>`:''}</div>
-      </div>`).join('')}
-    </div>
-  </div>`;
+  return '<div class="step-body"><div class="q">'+s.q+'</div>'+(s.classRef?'<div class="cref">'+linkRef(s.classRef)+'</div>':'')+'<div class="opts">'+s.opts.map(function(o){return '<div class="opt '+(ans[s.id]===o.v?'sel':'')+'" onclick="pick(\''+s.id+'\',\''+o.v+'\','+i+')"><div class="orad"></div><div><div class="ol">'+o.l+'</div>'+(o.d?'<div class="od">'+o.d+'</div>':'')+'</div></div>';}).join('')+'</div></div>';
 }
 
-function renderOKS(s,i){
-  const oksAns=ans.oks_answers||{};
-  const allAnswered=Object.keys(oksAns).length===12;
-  let score=0;
-  if(allAnswered) for(let k in oksAns) score+=(4-oksAns[k]);
-  return `<div class="step-body">
-    <div class="q">${s.q}</div>
-    ${s.classRef?`<div class="cref">${s.classRef}</div>`:''}
-    <div style="margin-top:10px">
-      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
-        <button onclick="skipOKS(${i})" style="padding:6px 16px;border-radius:6px;border:1px solid var(--bdr);background:var(--s2);color:var(--t3);font-size:11px;cursor:pointer;font-family:inherit">Saltar (sem PROMs) →</button>
-        ${allAnswered?`<div style="padding:6px 16px;border-radius:6px;border:1px solid var(--green-bdr);background:var(--green-bg);color:var(--green);font-size:13px;font-weight:700">OKS = ${score}/48 ${score<20?'(severo)':score<27?'(moderado-severo)':score<30?'(moderado)':score<40?'(ligeiro)':'(bom)'}</div>`:''}
-      </div>
-      ${s.oksQuestions.map((q,qi)=>`
-        <div style="margin-bottom:10px;padding:10px 12px;background:var(--s2);border:1px solid ${oksAns[qi]!==undefined?'var(--green-bdr)':'var(--bdr)'};border-radius:8px">
-          <div style="font-size:12px;font-weight:600;margin-bottom:6px;color:${oksAns[qi]!==undefined?'var(--green)':'var(--t2)'}">${qi+1}. ${q.q}</div>
-          <div style="display:flex;flex-wrap:wrap;gap:4px">${q.opts.map((o,oi)=>`
-            <button onclick="setOKS(${qi},${oi})" style="padding:4px 10px;border-radius:5px;border:1px solid ${oksAns[qi]===oi?'var(--blue)':'var(--bdr)'};background:${oksAns[qi]===oi?'var(--blue-bg)':'var(--s3)'};color:${oksAns[qi]===oi?'var(--blue)':'var(--t3)'};font-size:10.5px;cursor:pointer;font-family:inherit;transition:.1s">${o}</button>`).join('')}
-          </div>
-        </div>`).join('')}
-      ${allAnswered?`<div class="mnext"><button onclick="confirmOKS(${score},${i})">Confirmar OKS ${score}/48 →</button></div>`:''}
-    </div>
-  </div>`;
+function renderMulti(s,i){var sel=ans[s.id+'_multi']||[];
+  return '<div class="step-body"><div class="q">'+s.q+'</div>'+(s.classRef?'<div class="cref">'+linkRef(s.classRef)+'</div>':'')+'<div class="opts">'+s.opts.map(function(o){return '<div class="mopt '+(sel.includes(o.v)?'sel':'')+'" data-v="'+o.v+'" onclick="toggleMulti(\''+s.id+'\',\''+o.v+'\','+i+')"><div class="mchk">'+(sel.includes(o.v)?'✓':'')+'</div><div><div class="ol">'+o.l+'</div>'+(o.d?'<div class="od">'+o.d+'</div>':'')+'</div></div>';}).join('')+'</div><div class="mnext"><button onclick="confirmMulti(\''+s.id+'\','+i+')">Confirmar →</button></div></div>';
 }
 
-function setOKS(qi,oi){
-  if(!ans.oks_answers) ans.oks_answers={};
-  ans.oks_answers[qi]=oi;
-  render();
-}
-function skipOKS(idx){
-  ans.proms='skip';ans.oks_score=null;ans.proms_done=true;
-  clearAfter(idx);cur=idx+1;render();
-}
-function confirmOKS(score,idx){
-  ans.oks_score=score;
-  ans.proms=score<20?'severe':score<27?'moderate':score<30?'moderate':score<40?'mild':'good';
-  ans.proms_done=true;
-  clearAfter(idx);cur=idx+1;render();
-}
-function renderMulti(s,i){
-  const sel=ans[s.id+'_multi']||[];
-  return `<div class="step-body">
-    <div class="q">${s.q}</div>
-    ${s.classRef?`<div class="cref">${s.classRef}</div>`:''}
-    <div class="opts" style="margin-top:10px">${s.opts.map(o=>`
-      <div class="mopt ${sel.includes(o.v)?'sel':''}" onclick="toggleMulti('${s.id}','${o.v}',${i})">
-        <div class="mchk">${sel.includes(o.v)?'✓':''}</div>
-        <div><div class="ol">${o.l}</div>${o.d?`<div class="od">${o.d}</div>`:''}</div>
-      </div>`).join('')}
-    </div>
-    <div class="mnext"><button onclick="confirmMulti('${s.id}',${i})">Confirmar →</button></div>
-  </div>`;
+function renderDeformity(s,i){const d=ans.deformData||{};
+  return `<div class="step-body"><div class="q">${s.q}</div><div class="cref">${linkRef(s.classRef)}</div>
+  <div style="margin-top:12px">
+    <div class="num-input-row"><label>HKA mec. <span style="color:var(--red)">*</span></label><input type="number" id="inp_hka" value="${d.hka!=null?d.hka:''}" step="0.1" placeholder="ex: 175"><span class="unit">° — obrigatório</span></div>
+    <div class="num-input-row"><label>mMPTA</label><input type="number" id="inp_mpta" value="${d.mpta!=null?d.mpta:''}" step="0.1" placeholder="opcional"><span class="unit">°</span><span class="hint">Origem tibial se &lt;84°</span></div>
+    <div class="num-input-row"><label>mLDFA</label><input type="number" id="inp_mldfa" value="${d.mldfa!=null?d.mldfa:''}" step="0.1" placeholder="opcional"><span class="unit">°</span><span class="hint">Origem femoral se &gt;90°</span></div>
+    <div class="num-input-row"><label>JLCA</label><input type="number" id="inp_jlca" value="${d.jlca!=null?d.jlca:''}" step="0.1" placeholder="opcional"><span class="unit">° (normal 0–2°)</span></div>
+  </div>
+  <div class="mnext" style="margin-top:12px"><button onclick="confirmDeformity(${i})">Confirmar Análise →</button></div></div>`;
 }
 
-function renderFirstResult(r){
-  let h=`<div class="result exams"><div class="rtag exams">Diagnósticos Diferenciais</div>
-    <div class="rh">Hipóteses diagnósticas por probabilidade</div>
-    <div class="ddx-grid">`;
-  r.ddx.forEach(d=>{
-    h+=`<div class="ddx">
-      <div class="ddx-header"><div class="ddx-name">${d.name}</div><div class="ddx-prob ${d.prob}">${d.prob==='likely'?'Provável':'Possível'}</div></div>
-      <div class="ddx-keys">${d.keys}</div>
-      <div class="ddx-exam"><strong>Exame:</strong> ${d.exam}</div>
-    </div>`;
-  });
-  h+=`</div></div>`;
-
-  if(r.exams.length){
-    h+=`<div class="exam-panel"><div class="exam-cat-title">Exames a Pedir</div>`;
-    r.exams.forEach(e=>{h+=`<div class="exam-item"><div class="ei-name">${e.n}</div><div class="ei-why">${e.w}</div></div>`;});
-    h+=`<div style="margin-top:10px;font-size:11px;color:var(--t3)"><strong>Próximo passo:</strong> Após resultados, usar o modo <em>Reavaliação</em> para decisão terapêutica.</div></div>`;
+function confirmDeformity(idx){
+  const hkaRaw=document.getElementById('inp_hka').value;
+  if(!hkaRaw){alert('HKA mecânico é obrigatório.');return;}
+  const hka=parseFloat(hkaRaw);
+  const mptaR=document.getElementById('inp_mpta').value,mldfaR=document.getElementById('inp_mldfa').value,jlcaR=document.getElementById('inp_jlca').value;
+  const mpta=mptaR?parseFloat(mptaR):null,mldfa=mldfaR?parseFloat(mldfaR):null,jlca=jlcaR?parseFloat(jlcaR):null;
+  const varusTotal=180-hka;
+  const hasMPTA=mpta!==null,hasLDFA=mldfa!==null,hasJLCA=jlca!==null;
+  const tibialDeform=hasMPTA?(87-mpta):null,femoralDeform=hasLDFA?(mldfa-87):null;
+  const simMPTA=hasMPTA?(mpta+varusTotal+3):null;
+  let osteoSite='hto',osteoReason='';
+  if(hasMPTA&&hasLDFA){
+    if(mpta<84&&mldfa<=90){osteoSite='hto';osteoReason='Origem tibial (mMPTA < 84°): OWHTO indicada.';}
+    else if(mldfa>90&&mpta>=84){osteoSite='dfo';osteoReason='Origem femoral (mLDFA > 90°): DFO medial closing-wedge indicada.';}
+    else if(mldfa>90&&mpta<84){osteoSite='dlo';osteoReason='Deformidade mista (tibial+femoral): DLO a considerar.';}
+    else if(simMPTA>95){osteoSite='dlo';osteoReason='HTO isolada criaria MPTA simulado '+simMPTA.toFixed(1)+'° (>95°) → JLO excessiva → DLO (Babis 2002; Schröter 2017).';}
+    else{osteoSite='hto';osteoReason='Deformidade predominantemente tibial. OWHTO indicada.';}
+  } else {
+    let missing=[];if(!hasMPTA)missing.push('mMPTA');if(!hasLDFA)missing.push('mLDFA');
+    osteoReason='Local indeterminado — '+missing.join(' e ')+' não fornecido(s). Medir na telemetria em carga.';
   }
+  let jlcaNote='';
+  if(hasJLCA){
+    if(jlca>2){const c=((jlca-2)/2).toFixed(1);jlcaNote='JLCA '+jlca+'° > 2° → deformidade intra-articular. Correcção estimada: ~'+c+'° (Micicoi/Kley: (JLCA−2)/2). Subtrair à correcção óssea. Se > 6°: técnicas especiais (osteotomia condiliana, correcção gradual, DLO).';}
+    else jlcaNote='JLCA ≤ 2°: sem ajuste intra-articular necessário.';
+  } else jlcaNote='JLCA não fornecido — se > 2° poderá haver deformidade intra-articular → risco sobrecorrecção. Medir.';
+  ans.deformData={hka,mpta,mldfa,jlca,varusTotal,tibialDeform,femoralDeform,simMPTA,osteoSite,osteoReason,jlcaNote,hasMPTA,hasLDFA,hasJLCA};
+  ans.deform_done=true;
+  if(varusTotal<=0)ans.align='neutral';else if(varusTotal<=3)ans.align='mild';else if(varusTotal<=5)ans.align='mod';else ans.align='sev';
+  jumpNext();
+}
+
+function renderPROMs(s,i){
+  let h=`<div class="step-body"><div class="q">${s.q}</div>${s.classRef?`<div class="cref">${linkRef(s.classRef)}</div>`:''}
+  <div class="mnext" style="margin-bottom:12px"><button onclick="skipPROMs(${i})">Saltar PROMs →</button></div>
+  <div class="prom-form" data-idx="${i}"><h3>Oxford Knee Score (OKS) — 12 perguntas (últimas 4 semanas)</h3>`;
+  OKS_Q.forEach((q,qi)=>{
+    h+=`<div class="prom-q"><div class="prom-q-text">${qi+1}. ${q.q}</div><div class="prom-opts">`;
+    q.opts.forEach((o,oi)=>{h+=`<div class="prom-opt ${promData['oks_'+qi]===oi?'sel':''}" onclick="setProm(${qi},${oi})">${o}</div>`;});
+    h+=`</div></div>`;
+  });
+  let total=0,answered=0;
+  OKS_Q.forEach((_,qi)=>{if(promData['oks_'+qi]!==undefined){total+=OKS_Q[qi].sc[promData['oks_'+qi]];answered++;}});
+  const complete=answered===12;
+  const scoreText=complete?total:(answered>0?total+' ('+answered+'/12)':'—');
+  const interp=complete?(total<20?'Função severamente limitada — forte indicação intervenção':total<27?'Limitação significativa — indicação cirúrgica provável':total<30?'Limitação moderada — ponderar intervenção vs optimização':total<40?'Limitação ligeira — optimizar conservador':'Função satisfatória — manter conservador'):'';
+  h+=`<div class="prom-score"><div>OKS: <span class="score-num">${scoreText}</span> / 48</div>${interp?'<div style="margin-top:4px;font-size:11px;color:var(--t3)">'+interp+'</div>':''}</div>`;
+  h+=`<div class="mnext prom-confirm-area" style="margin-top:8px">${complete?'<button onclick="confirmPROMs('+total+','+i+')">Confirmar OKS '+total+'/48 →</button>':''}</div>`;
+  h+=`</div></div>`;
   return h;
+}
+function setProm(qi,oi){
+  promData['oks_'+qi]=oi;
+  const container=document.querySelector('.prom-form');
+  if(container){
+    container.querySelectorAll('.prom-q')[qi]?.querySelectorAll('.prom-opt').forEach((el,i)=>el.classList.toggle('sel',i===oi));
+    let total=0,answered=0;
+    OKS_Q.forEach((_,i)=>{if(promData['oks_'+i]!==undefined){total+=OKS_Q[i].sc[promData['oks_'+i]];answered++;}});
+    const complete=answered===12;
+    const interp=complete?(total<20?'Função severamente limitada — forte indicação intervenção':total<27?'Limitação significativa — indicação cirúrgica provável':total<30?'Limitação moderada':total<40?'Limitação ligeira':'Função satisfatória'):'';
+    const se=container.querySelector('.prom-score');
+    if(se)se.innerHTML='<div>OKS: <span class="score-num">'+(complete?total:(answered>0?total+' ('+answered+'/12)':'—'))+'</span> / 48</div>'+(interp?'<div style="margin-top:4px;font-size:11px;color:var(--t3)">'+interp+'</div>':'');
+    const ca=container.parentElement.querySelector('.prom-confirm-area');
+    if(ca)ca.innerHTML=complete?'<button onclick="confirmPROMs('+total+','+container.dataset.idx+')">Confirmar OKS '+total+'/48 →</button>':'';
+  } else render();
+}
+function skipPROMs(idx){ans.oks_score=undefined;ans.proms='skip';ans.proms_done=true;jumpNext();}
+function confirmPROMs(score,idx){ans.oks_score=score;ans.proms=score<20?'severe':score<27?'moderate':score<30?'moderate_mild':score<40?'mild':'good';ans.proms_done=true;jumpNext();}
+
+// ── RESULTS ──
+function renderFirstResult(r){
+  let h='<div class="result exams"><div class="rtag exams">Diagnósticos Diferenciais</div><div class="rh">Hipóteses por probabilidade</div>';
+  r.ddx.forEach(d=>{h+=`<div class="ddx"><div class="ddx-header"><div class="ddx-name">${d.name}</div><div class="ddx-prob ${d.prob}">${d.prob==='likely'?'Provável':'Possível'}</div></div><div class="ddx-keys">${d.keys}</div><div class="ddx-exam"><strong>Exame:</strong> ${d.exam}</div></div>`;});
+  h+='</div>';
+  if(r.exams.length){h+='<div class="exam-panel"><div class="exam-cat-title">Exames a Pedir</div>';r.exams.forEach(e=>{h+=`<div class="exam-item"><div class="ei-name">${e.n}</div><div class="ei-why">${e.w}</div></div>`;});h+='</div>';}
+  return h;
+}
+// ── REFERENCE URL MAP — ALL PMIDs VERIFIED VIA PUBMED ──
+const defined_REF={
+// ESSKA Consensus
+'ESSKA 2019':['Kopf et al. KSSTA 2020','https://pubmed.ncbi.nlm.nih.gov/32052121/'],
+'ESSKA 2016':['Beaufils et al. KSSTA 2017','https://pubmed.ncbi.nlm.nih.gov/28210788/'],
+'ESSKA 2024':['Pujol/Prill et al. KSSTA 2025','https://doi.org/10.1002/ksa.12674'],
+'ESSKA 2024 Part I':['Pujol et al. KSSTA 2025','https://doi.org/10.1002/ksa.12674'],
+'ESSKA 2024 Part II':['Prill et al. KSSTA 2025','https://doi.org/10.1002/ksa.12689'],
+// Degenerative meniscus RCTs
+'OMEX':['Berg et al. BJSM 2025','https://pubmed.ncbi.nlm.nih.gov/39326908/'],
+'OMEX 10a':['Berg et al. BJSM 2025','https://pubmed.ncbi.nlm.nih.gov/39326908/'],
+'OMEX 10y':['Berg et al. BJSM 2025','https://pubmed.ncbi.nlm.nih.gov/39326908/'],
+'OMEX 10y 2024':['Berg et al. BJSM 2025','https://pubmed.ncbi.nlm.nih.gov/39326908/'],
+'OMEX 2024':['Berg et al. BJSM 2025','https://pubmed.ncbi.nlm.nih.gov/39326908/'],
+'FIDELITY':['Sihvonen et al. BJSM 2020','https://pubmed.ncbi.nlm.nih.gov/32855201/'],
+'FIDELITY 2020':['Sihvonen et al. BJSM 2020','https://pubmed.ncbi.nlm.nih.gov/32855201/'],
+'DREAM':['Damsted et al. JOSPT 2024','https://pubmed.ncbi.nlm.nih.gov/38385220/'],
+'DREAM 2024':['Damsted et al. JOSPT 2024','https://pubmed.ncbi.nlm.nih.gov/38385220/'],
+// Root tear studies
+'Lee Arthroscopy 2025':['Lee et al. Arthroscopy 2025','https://pubmed.ncbi.nlm.nih.gov/38401664/'],
+'Lee 2025':['Lee et al. Arthroscopy 2025','https://pubmed.ncbi.nlm.nih.gov/38401664/'],
+'Faucett AJSM 2019':['Faucett et al. AJSM 2019','https://pubmed.ncbi.nlm.nih.gov/30557515/'],
+'Bernard 2020':['Bernard et al. AJSM 2020','https://pubmed.ncbi.nlm.nih.gov/31765234/'],
+'Deichsel AJSM 2024':['Deichsel et al. AJSM 2022','https://pubmed.ncbi.nlm.nih.gov/35384728/'],
+'Deichsel 2024':['Deichsel et al. AJSM 2022','https://pubmed.ncbi.nlm.nih.gov/35384728/'],
+'Krych 2024':['Yan/Krych et al. KSSTA 2025','https://pubmed.ncbi.nlm.nih.gov/39543774/'],
+'Tokumoto 2025':['Tokumoto et al. Arthroscopy 2025','https://pubmed.ncbi.nlm.nih.gov/40675459/'],
+'Kawada 2025':['Kawada et al. JEO 2025','https://pubmed.ncbi.nlm.nih.gov/39839858/'],
+'Garcia OJSM 2024':['Garcia et al. OJSM 2024','https://pubmed.ncbi.nlm.nih.gov/39493310/'],
+'LaPrade 2015':['LaPrade et al. AJSM 2015','https://pubmed.ncbi.nlm.nih.gov/25624574/'],
+'Singh 2025':['Ade-Conde et al. JISAKOS 2025','https://pubmed.ncbi.nlm.nih.gov/41265840/'],
+// Ramp lesion
+'Thaunat 2016':['Thaunat et al. AJSM 2016','https://pubmed.ncbi.nlm.nih.gov/26233594/'],
+'Siboni Curr Rev 2023':['Siboni et al. CRMM 2023','https://pubmed.ncbi.nlm.nih.gov/36800117/'],
+// Radial
+'Matsubara KSSTA 2019':['Matsubara et al. KSSTA 2019','https://pubmed.ncbi.nlm.nih.gov/30456570/'],
+// Osteotomy
+'UK KOG 2021':['Abram et al. BJSM 2022','https://pubmed.ncbi.nlm.nih.gov/34756494/'],
+'Osteotomy Consensus 2022':['Ollivier et al. KSSTA 2022','https://pubmed.ncbi.nlm.nih.gov/36209753/'],
+'Babis 2002':['Babis et al. CORR 2002','https://pubmed.ncbi.nlm.nih.gov/12085574/'],
+'Micicoi':['Micicoi et al. KSSTA 2020','https://pubmed.ncbi.nlm.nih.gov/32577748/'],
+'Micicoi 2020':['Micicoi et al. KSSTA 2020','https://pubmed.ncbi.nlm.nih.gov/32577748/'],
+'Amendola':['Amendola AAOS Instr. Course','https://pubmed.ncbi.nlm.nih.gov/17513879/'],
+// PUC / decision
+'Kozinn':['Kozinn & Scott JBJS 1989','https://pubmed.ncbi.nlm.nih.gov/2981440/'],
+'Oxford criteria':['Kozinn & Scott JBJS 1989','https://pubmed.ncbi.nlm.nih.gov/2981440/'],
+'UNIKORN 2023':['Siren et al. Trials 2023','https://pubmed.ncbi.nlm.nih.gov/37016454/'],
+// PROMs
+'COSMIN 2021':['Gagnier et al. AJSM 2021','https://pubmed.ncbi.nlm.nih.gov/34156088/'],
+'Barahona 2024':['Barahona et al. KSSTA 2024','https://pubmed.ncbi.nlm.nih.gov/38654973/'],
+// Other meniscal
+'Fillingham 2019':['Fillingham et al. AJSM 2019','https://pubmed.ncbi.nlm.nih.gov/30144395/'],
+'Syst. Review Meniscal Cysts 2021':['Syst. Rev. Meniscal Cysts 2021','https://pubmed.ncbi.nlm.nih.gov/33569707/'],
+// AAOS (guideline page, not PubMed)
+'AAOS 2024':['AAOS CPG: OA Knee 2021','https://www.aaos.org/quality/quality-programs/lower-extremity-programs/osteoarthritis-of-the-knee/'],
+'Schröter 2017':['Schröter et al. KSSTA 2017','https://pubmed.ncbi.nlm.nih.gov/28315952/'],
+'Sokal KSSTA 2022':['Sokal et al. KSSTA 2022','https://pubmed.ncbi.nlm.nih.gov/34985575/'],
+'Saragaglia':['Saragaglia et al. KSSTA 2016','https://pubmed.ncbi.nlm.nih.gov/28780782/']
+};
+// Compound keys: "ESSKA 2016/2024" or "ESSKA 2019/2024" should resolve to two links
+function linkRef(txt){
+  if(!txt)return '';
+  let out=txt;
+  // First resolve compound year forms: "ESSKA 2016/2024" → two links
+  out=out.replace(/ESSKA\s+2016\/2024/g,function(){
+    const a=defined_REF['ESSKA 2016'],b=defined_REF['ESSKA 2024'];
+    return '<a href="'+a[1]+'" target="_blank" rel="noopener" class="ref-link">ESSKA 2016</a>/<a href="'+b[1]+'" target="_blank" rel="noopener" class="ref-link">2024</a>';
+  });
+  out=out.replace(/ESSKA\s+2019\/2024/g,function(){
+    const a=defined_REF['ESSKA 2019'],b=defined_REF['ESSKA 2024'];
+    return '<a href="'+a[1]+'" target="_blank" rel="noopener" class="ref-link">ESSKA 2019</a>/<a href="'+b[1]+'" target="_blank" rel="noopener" class="ref-link">2024</a>';
+  });
+  // Now replace individual tokens, longest first to avoid partial matches
+  const keys=Object.keys(defined_REF).sort((a,b)=>b.length-a.length);
+  keys.forEach(k=>{
+    const url=defined_REF[k][1];
+    const esc=k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    // Only replace if not already inside an <a> tag
+    out=out.replace(new RegExp('(?!<a[^>]*>)'+esc+'(?![^<]*<\\/a>)','g'),
+      '<a href="'+url+'" target="_blank" rel="noopener" class="ref-link">'+k+'</a>');
+  });
+  return out;
 }
 
 function renderFollowupResult(r){
-  const cn=r.cat;
-  const cnl={repair:'Reparação / Preservação',hto:'HTO',puc:'PUC',ptj:'PTJ',conserv:'Conservador',combo:'Combinado'};
-  return `<div class="result ${cn}">
-    <div class="rtag ${cn}">${cnl[cn]||cn}</div>
-    <div class="rh">${r.title}</div>
-    <div class="rb">${r.body}</div>
-    ${r.refs?`<details class="rrefs"><summary>Referências</summary><p>${r.refs}</p></details>`:''}
-  </div>`;
+  const cn=r.cat,cnl={repair:'Reparação / Preservação',hto:'Osteotomia',puc:'PUC Medial',ptj:'PTJ',conserv:'Conservador',combo:'Combinado / Decisão Partilhada'};
+  let h=`<div class="result ${cn}"><div class="rtag ${cn}">${cnl[cn]||cn}</div><div class="rh">${r.title}</div><div class="rb">${linkRef(r.body)}</div>`;
+  if(r.refs)h+=`<details class="rrefs"><summary>Referências</summary><p>${linkRef(r.refs)}</p></details>`;
+  h+='</div>';return h;
 }
 
-// ─── INTERACTIONS ───
-function setPathway(p){pathway=p;cur=0;ans={};render();}
-function resetPathway(){pathway=null;cur=0;ans={};render();}
-function isDone(s){
-  if(s.type==='multi') return ans[s.id+'_done']===true;
-  if(s.type==='custom_oks') return ans.proms_done===true;
-  return ans[s.id]!==undefined;
-}
-function pick(sid,val,idx){ans[sid]=val;clearAfter(idx);cur=idx+1;render();}
+// ── INTERACTIONS ──
+function jumpNext(){const steps=PW==='first'?FC:FU;let n=steps.length;for(let i=0;i<steps.length;i++){if(!isDone(steps[i])){n=i;break;}}cur=n;render();}
+function setPW(p){PW=p;cur=0;ans={};promData={};render();}
+function resetPW(){PW=null;cur=0;ans={};promData={};render();}
+function isDone(s){if(s.type==='multi')return ans[s.id+'_done']===true;if(s.type==='custom_deformity')return ans.deform_done===true;if(s.type==='custom_proms')return ans.proms_done===true;return ans[s.id]!==undefined;}
+function pick(sid,val,idx){ans[sid]=val;jumpNext();}
 function toggleMulti(sid,val,idx){
   let arr=ans[sid+'_multi']||[];
-  if(val==='none'||val==='none_sig'){arr=[val];}
-  else{
-    arr=arr.filter(v=>v!=='none'&&v!=='none_sig');
-    if(sid==='assoc'){if(val==='pf_mild')arr=arr.filter(v=>v!=='pf_severe');if(val==='pf_severe')arr=arr.filter(v=>v!=='pf_mild');}
-    if(arr.includes(val))arr=arr.filter(v=>v!==val);else arr.push(val);
-  }
-  if(!arr.length)arr=['none'];
-  ans[sid+'_multi']=arr;ans[sid+'_done']=false;render();
+  if(val==='none'||val==='none_sig'){arr=[val];}else{arr=arr.filter(v=>v!=='none'&&v!=='none_sig');if(sid==='assoc'){if(val==='pf_mild')arr=arr.filter(v=>v!=='pf_severe');if(val==='pf_severe')arr=arr.filter(v=>v!=='pf_mild');}if(arr.includes(val))arr=arr.filter(v=>v!==val);else arr.push(val);}
+  if(!arr.length)arr=['none'];ans[sid+'_multi']=arr;ans[sid+'_done']=false;
+  const container=document.querySelectorAll('.step')[Array.from(document.querySelectorAll('.step')).findIndex((_,j)=>{const h=_.querySelector('.st');return h&&h.textContent===(PW==='first'?FC:FU).find(s=>s.id===sid)?.title;})];
+  if(container){container.querySelectorAll('.mopt').forEach(el=>{const v=el.getAttribute('data-v');if(v){const s=arr.includes(v);el.classList.toggle('sel',s);const chk=el.querySelector('.mchk');if(chk)chk.textContent=s?'✓':'';}});}else render();
 }
-function confirmMulti(sid,idx){
-  const arr=ans[sid+'_multi']||['none'];
-  if(sid==='assoc')ans.assoc=arr;
-  if(sid==='signs')ans.signs_multi=arr;
-  if(sid==='hx')ans.hx_multi=arr;
-  ans[sid+'_done']=true;clearAfter(idx);cur=idx+1;render();
+function confirmMulti(sid,idx){const arr=ans[sid+'_multi']||['none'];if(sid==='assoc')ans.assoc=arr;if(sid==='signs')ans.signs_multi=arr;if(sid==='hx')ans.hx_multi=arr;ans[sid+'_done']=true;jumpNext();}
+function goTo(idx){
+  const s=(PW==='first'?FC:FU)[idx];
+  delete ans[s.id];delete ans[s.id+'_multi'];delete ans[s.id+'_done'];
+  if(s.type==='custom_deformity'){delete ans.deform_done;delete ans.deformData;delete ans.align;}
+  if(s.type==='custom_proms'){delete ans.proms_done;delete ans.oks_score;delete ans.proms;}
+  cur=idx;render();
 }
-function clearAfter(idx){
-  const steps=getSteps();
-  for(let i=idx+1;i<steps.length;i++){const s=steps[i];delete ans[s.id];delete ans[s.id+'_multi'];delete ans[s.id+'_done'];
-    if(s.type==='custom_oks'){delete ans.oks_answers;delete ans.oks_score;delete ans.proms;delete ans.proms_done;}
-  }
-}
-function goTo(idx){clearAfter(idx-1);const s=getSteps()[idx];delete ans[s.id];delete ans[s.id+'_multi'];delete ans[s.id+'_done'];
-  if(s.type==='custom_oks'){delete ans.oks_answers;delete ans.oks_score;delete ans.proms;delete ans.proms_done;}
-  cur=idx;render();}
-function restart(){ans={};cur=0;render();window.scrollTo({top:0,behavior:'smooth'});}
-
+function restart(){ans={};cur=0;promData={};render();window.scrollTo({top:0,behavior:'smooth'});}
 render();
-</script>
-</body>
-</html>
+</script></body></html>
