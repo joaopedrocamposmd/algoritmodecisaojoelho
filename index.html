@@ -3,76 +3,77 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Knee Decision System — v5.2</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<title>Knee Decision System — v5.2 · UBNIC</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100' height='100' rx='20' fill='%233b877b'/%3E%3Cpath d='M28 30 V50 C28 75 40 82 50 82 C60 82 72 75 72 50 V30' stroke='white' stroke-width='12' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='28' cy='30' r='8' fill='white'/%3E%3Ccircle cx='50' cy='82' r='8' fill='white'/%3E%3Ccircle cx='72' cy='30' r='8' fill='white'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#04070c;--s1:#0a0f18;--s2:#0f1520;--s3:#151d2b;--s4:#1c2638;--bdr:#1a2436;--bdr2:#253550;--t1:#e8ecf4;--t2:#a4b0c8;--t3:#6b7a96;--t4:#4a5874;--green:#34d399;--green-bg:rgba(52,211,153,.07);--green-bdr:rgba(52,211,153,.22);--blue:#38bdf8;--blue-bg:rgba(56,189,248,.07);--blue-bdr:rgba(56,189,248,.22);--amber:#fbbf24;--amber-bg:rgba(251,191,36,.07);--amber-bdr:rgba(251,191,36,.22);--red:#fb7185;--red-bg:rgba(251,113,133,.07);--red-bdr:rgba(251,113,133,.22);--purple:#a78bfa;--purple-bg:rgba(167,139,250,.07);--purple-bdr:rgba(167,139,250,.22);--cyan:#22d3ee;--cyan-bg:rgba(34,211,238,.07);--cyan-bdr:rgba(34,211,238,.22);--teal:#2dd4bf;--teal-bg:rgba(45,212,191,.07);--teal-bdr:rgba(45,212,191,.22);--r:10px;--r2:14px}
-body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--t1);line-height:1.6;-webkit-font-smoothing:antialiased}
-body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(56,189,248,.025),transparent 70%);pointer-events:none;z-index:0}
+:root{--bg:#f4f7f6;--s1:rgba(255,255,255,0.70);--s2:rgba(255,255,255,0.50);--s3:rgba(255,255,255,0.85);--s4:#e8eeec;--bdr:rgba(59,135,123,0.15);--bdr2:rgba(59,135,123,0.30);--t1:#2c3e50;--t2:#445566;--t3:#6b8299;--t4:#8fa3b8;--green:#2ecc71;--green-bg:rgba(46,204,113,.08);--green-bdr:rgba(46,204,113,.25);--blue:#3b877b;--blue-bg:rgba(59,135,123,.08);--blue-bdr:rgba(59,135,123,.25);--amber:#e67e22;--amber-bg:rgba(230,126,34,.07);--amber-bdr:rgba(230,126,34,.22);--red:#e74c3c;--red-bg:rgba(231,76,60,.07);--red-bdr:rgba(231,76,60,.22);--purple:#8e44ad;--purple-bg:rgba(142,68,173,.06);--purple-bdr:rgba(142,68,173,.20);--cyan:#2a6058;--cyan-bg:rgba(42,96,88,.06);--cyan-bdr:rgba(42,96,88,.20);--teal:#3b877b;--teal-bg:rgba(59,135,123,.07);--teal-bdr:rgba(59,135,123,.22);--r:8px;--r2:12px;--blur:12px;--font-sans:'Inter',system-ui,-apple-system,sans-serif;--font-mono:'IBM Plex Mono','Roboto Mono',monospace}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--t1);line-height:1.6;-webkit-font-smoothing:antialiased}
+body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(59,135,123,.06),transparent 70%);pointer-events:none;z-index:0}
 .wrap{max-width:1020px;margin:0 auto;padding:28px 18px 120px;position:relative;z-index:1}
 header{text-align:center;padding:36px 0 20px}
-.sys-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:var(--s2);border:1px solid var(--bdr);border-radius:99px;font-size:10.5px;font-weight:600;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px}
+.sys-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:rgba(59,135,123,.08);border:1px solid rgba(59,135,123,.20);border-radius:99px;font-size:10.5px;font-weight:600;color:var(--teal);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px}
 .sys-badge i{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)}
-h1{font-family:'DM Serif Display',serif;font-size:clamp(22px,4vw,34px);line-height:1.2;margin-bottom:6px}
+h1{font-family:var(--font-sans);font-weight:700;font-size:clamp(22px,4vw,34px);line-height:1.2;margin-bottom:6px;color:var(--t1)}
 .sub{font-size:13px;color:var(--t3);max-width:640px;margin:0 auto;font-weight:300}
-.sticky-nav{position:sticky;top:0;z-index:100;background:rgba(4,7,12,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--bdr);padding:8px 18px;margin:0 -18px;display:none;align-items:center;gap:8px;flex-wrap:wrap}
+.sticky-nav{position:sticky;top:0;z-index:100;background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom:none;padding:8px 18px;margin:0 -18px;display:none;align-items:center;gap:8px;flex-wrap:wrap}
 .sticky-nav.vis{display:flex}
 .sticky-nav button{padding:5px 14px;border-radius:8px;border:1px solid var(--bdr);background:var(--s2);color:var(--t3);font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s;white-space:nowrap}
-.sticky-nav button:hover{border-color:var(--blue);color:var(--blue)}
-.sticky-nav .nav-label{font-size:11.5px;font-weight:600;color:var(--blue);flex:1}
+.sticky-nav button:hover{border-color:var(--teal);color:var(--teal)}
+.sticky-nav .nav-label{font-size:11.5px;font-weight:600;color:var(--teal);flex:1}
 .path-sel{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0 24px}
-.path-card{padding:20px;background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r2);cursor:pointer;transition:.2s;position:relative;overflow:hidden}
-.path-card:hover{border-color:var(--bdr2);background:var(--s2)}
-.path-card.active{border-color:var(--blue);background:var(--blue-bg)}
-.path-card.active::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--blue)}
+.path-card{padding:20px;background:var(--s1);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));border:1px solid var(--bdr);border-radius:var(--r2);cursor:pointer;transition:.2s;position:relative;overflow:hidden;box-shadow:0 4px 6px -1px rgba(0,0,0,.05)}
+.path-card:hover{border-color:var(--bdr2);background:var(--s3)}
+.path-card.active{border-color:var(--teal);background:var(--blue-bg)}
+.path-card.active::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--teal)}
 .path-icon{font-size:26px;margin-bottom:8px}.path-title{font-size:14px;font-weight:700;margin-bottom:4px}
 .path-desc{font-size:11.5px;color:var(--t3);line-height:1.5}
-.path-card.active .path-title{color:var(--blue)}
+.path-card.active .path-title{color:var(--teal)}
 @media(max-width:600px){.path-sel{grid-template-columns:1fr}}
-.step{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r2);overflow:hidden;animation:fadeUp .3s ease both}.step+.step{margin-top:10px}
+.step{background:var(--s1);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));border:1px solid var(--bdr);border-radius:var(--r2);overflow:hidden;animation:fadeUp .3s ease both;box-shadow:0 4px 6px -1px rgba(0,0,0,.05)}.step+.step{margin-top:10px}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .step-head{display:flex;align-items:center;gap:10px;padding:13px 16px;background:var(--s2);border-bottom:1px solid var(--bdr)}
 .sn{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;background:var(--s4);color:var(--t3)}
-.sn.on{background:var(--blue);color:#fff}.sn.ok{background:var(--green);color:#000}
+.sn.on{background:var(--teal);color:#fff}.sn.ok{background:var(--green);color:#fff}
 .st{font-size:13px;font-weight:600;flex:1}
 .sv{font-size:11px;color:var(--t3);max-width:260px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .s-edit{background:none;border:1px solid var(--bdr);color:var(--t4);padding:2px 9px;border-radius:6px;font-size:10px;cursor:pointer;font-family:inherit;margin-left:5px;transition:.15s}
-.s-edit:hover{border-color:var(--blue);color:var(--t2)}
+.s-edit:hover{border-color:var(--teal);color:var(--t2)}
 .step-body{padding:16px}.q{font-size:13.5px;color:var(--t2);margin-bottom:10px}
 .opts{display:flex;flex-direction:column;gap:5px}
 .opt{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;background:var(--s2);border:1px solid var(--bdr);border-radius:var(--r);cursor:pointer;transition:.15s}
-.opt:hover{border-color:var(--bdr2);background:var(--s3)}.opt.sel{border-color:var(--blue);background:var(--blue-bg)}
+.opt:hover{border-color:var(--bdr2);background:var(--s3)}.opt.sel{border-color:var(--teal);background:var(--blue-bg)}
 .orad{width:15px;height:15px;border-radius:50%;border:2px solid var(--t4);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center}
-.opt.sel .orad{border-color:var(--blue);background:var(--blue)}.opt.sel .orad::after{content:'';width:4px;height:4px;border-radius:50%;background:#fff}
+.opt.sel .orad{border-color:var(--teal);background:var(--teal)}.opt.sel .orad::after{content:'';width:4px;height:4px;border-radius:50%;background:#fff}
 .ol{font-size:12.5px;font-weight:600}.od{font-size:11px;color:var(--t3);line-height:1.5;margin-top:1px}
 .mopt{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;background:var(--s2);border:1px solid var(--bdr);border-radius:var(--r);cursor:pointer;transition:.15s}
-.mopt:hover{border-color:var(--bdr2);background:var(--s3)}.mopt.sel{border-color:var(--cyan);background:var(--cyan-bg)}
+.mopt:hover{border-color:var(--bdr2);background:var(--s3)}.mopt.sel{border-color:var(--teal);background:var(--blue-bg)}
 .mchk{width:15px;height:15px;border-radius:4px;border:2px solid var(--t4);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:9px;color:transparent}
-.mopt.sel .mchk{border-color:var(--cyan);background:var(--cyan);color:#000}
+.mopt.sel .mchk{border-color:var(--teal);background:var(--teal);color:#fff}
 .mnext{margin-top:8px;text-align:right}
-.mnext button{padding:7px 20px;border-radius:8px;border:1px solid var(--blue-bdr);background:var(--blue-bg);color:var(--blue);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s}
-.mnext button:hover{background:var(--blue);color:#000}
-.cref{margin:6px 0 8px;padding:7px 11px;background:rgba(56,189,248,.03);border:1px solid rgba(56,189,248,.1);border-radius:8px;font-size:11px;color:var(--t3);line-height:1.6}.cref strong{color:var(--blue);font-weight:600}
-.result{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r2);padding:20px;margin-top:12px;animation:fadeUp .35s ease both}
+.mnext button{padding:7px 20px;border-radius:8px;border:none;background:var(--teal);color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:.2s;box-shadow:0 2px 8px rgba(59,135,123,.20)}
+.mnext button:hover{background:var(--cyan);transform:translateY(-1px);box-shadow:0 4px 12px rgba(59,135,123,.25)}
+.cref{margin:6px 0 8px;padding:7px 11px;background:rgba(59,135,123,.04);border:1px solid rgba(59,135,123,.12);border-radius:8px;font-size:11px;color:var(--t3);line-height:1.6}.cref strong{color:var(--teal);font-weight:600}
+.result{background:var(--s1);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));border:1px solid var(--bdr);border-radius:var(--r2);padding:20px;margin-top:12px;animation:fadeUp .35s ease both;box-shadow:0 4px 6px -1px rgba(0,0,0,.05)}
 .result.repair{border-color:var(--green-bdr);background:var(--green-bg)}.result.hto{border-color:var(--blue-bdr);background:var(--blue-bg)}.result.puc{border-color:var(--amber-bdr);background:var(--amber-bg)}.result.ptj{border-color:var(--red-bdr);background:var(--red-bg)}.result.conserv{border-color:var(--purple-bdr);background:var(--purple-bg)}.result.combo{border-color:var(--teal-bdr);background:var(--teal-bg)}.result.exams{border-color:var(--cyan-bdr);background:var(--cyan-bg)}
 .rtag{display:inline-block;padding:3px 12px;border-radius:99px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px}
-.rtag.repair{background:var(--green);color:#000}.rtag.hto{background:var(--blue);color:#000}.rtag.puc{background:var(--amber);color:#000}.rtag.ptj{background:var(--red);color:#000}.rtag.conserv{background:var(--purple);color:#000}.rtag.combo{background:var(--teal);color:#000}.rtag.exams{background:var(--cyan);color:#000}
-.rh{font-family:'DM Serif Display',serif;font-size:18px;margin-bottom:10px}
+.rtag.repair{background:var(--green);color:#fff}.rtag.hto{background:var(--teal);color:#fff}.rtag.puc{background:var(--amber);color:#fff}.rtag.ptj{background:var(--red);color:#fff}.rtag.conserv{background:var(--purple);color:#fff}.rtag.combo{background:var(--teal);color:#fff}.rtag.exams{background:var(--cyan);color:#fff}
+.rh{font-family:var(--font-sans);font-weight:700;font-size:18px;margin-bottom:10px}
 .rb{font-size:12.5px;color:var(--t2);line-height:1.7}.rb ul{padding-left:16px;margin:6px 0}.rb li{margin-bottom:3px}.rb li.warn{color:var(--amber);font-weight:600}
-.rb .note{margin-top:10px;padding:8px 10px;background:rgba(255,255,255,.03);border-radius:6px;font-size:11px;color:var(--t3);border:1px solid var(--bdr)}
+.rb .note{margin-top:10px;padding:8px 10px;background:rgba(59,135,123,.04);border-radius:6px;font-size:11px;color:var(--t3);border:1px solid var(--bdr)}
 .rrefs{margin-top:10px;font-size:11px;color:var(--t3)}.rrefs summary{cursor:pointer;font-weight:600;color:var(--t2)}.rrefs p{margin-top:4px;line-height:1.6}
-.ref-link{color:var(--blue);text-decoration:none;border-bottom:1px dotted rgba(56,189,248,.35);transition:color .15s,border-color .15s;font-weight:500}.ref-link:hover{color:var(--cyan);border-bottom-color:var(--cyan)}
-.ddx{padding:14px;background:var(--s2);border:1px solid var(--bdr);border-radius:var(--r);margin-bottom:8px}
+.ref-link{color:var(--teal);text-decoration:none;border-bottom:1px dotted rgba(59,135,123,.35);transition:color .15s,border-color .15s;font-weight:500}.ref-link:hover{color:var(--cyan);border-bottom-color:var(--cyan)}
+.ddx{padding:14px;background:var(--s2);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));border:1px solid var(--bdr);border-radius:var(--r);margin-bottom:8px}
 .ddx-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px}
 .ddx-name{font-size:13px;font-weight:700}
 .ddx-prob{font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;white-space:nowrap}
 .ddx-prob.likely{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bdr)}
 .ddx-prob.possible{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bdr)}
 .ddx-keys{font-size:11px;color:var(--t3);line-height:1.5;margin-bottom:4px}
-.ddx-exam{font-size:11px;color:var(--t2)}.ddx-exam strong{color:var(--cyan)}
-.exam-panel{background:var(--s2);border:1px solid var(--cyan-bdr);border-radius:var(--r2);padding:16px;margin-top:12px}
-.exam-cat-title{font-size:12px;font-weight:700;color:var(--cyan);margin-bottom:6px;text-transform:uppercase;letter-spacing:.8px}
+.ddx-exam{font-size:11px;color:var(--t2)}.ddx-exam strong{color:var(--teal)}
+.exam-panel{background:var(--s2);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));border:1px solid var(--blue-bdr);border-radius:var(--r2);padding:16px;margin-top:12px}
+.exam-cat-title{font-size:12px;font-weight:700;color:var(--teal);margin-bottom:6px;text-transform:uppercase;letter-spacing:.8px}
 .exam-item{display:flex;gap:8px;padding:6px 0;font-size:12px;border-bottom:1px solid var(--bdr)}.exam-item:last-child{border-bottom:none}
 .exam-item .ei-name{font-weight:600;min-width:160px;flex-shrink:0}.exam-item .ei-why{color:var(--t3);flex:1}
 .prom-form{background:var(--s2);border:1px solid var(--purple-bdr);border-radius:var(--r2);padding:16px;margin-top:8px}
@@ -84,31 +85,71 @@ h1{font-family:'DM Serif Display',serif;font-size:clamp(22px,4vw,34px);line-heig
 .prom-opt:hover{border-color:var(--bdr2);color:var(--t2)}
 .prom-opt.sel{border-color:var(--purple);background:var(--purple-bg);color:var(--purple);font-weight:600}
 .prom-score{margin-top:12px;padding:10px;background:rgba(167,139,250,.06);border:1px solid var(--purple-bdr);border-radius:8px;font-size:12px;text-align:center}
-.prom-score .score-num{font-size:24px;font-weight:700;color:var(--purple);font-family:'DM Serif Display',serif}
+.prom-score .score-num{font-size:24px;font-weight:700;color:var(--purple);font-family:var(--font-sans)}
 .num-input-row{display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
 .num-input-row label{font-size:12px;font-weight:600;min-width:80px}
-.num-input-row input{width:75px;padding:6px 8px;background:var(--s3);border:1px solid var(--bdr);border-radius:6px;color:var(--t1);font-family:inherit;font-size:13px;text-align:center}
-.num-input-row input:focus{outline:none;border-color:var(--blue)}
+.num-input-row input{width:75px;padding:6px 8px;background:var(--s3);border:1px solid var(--bdr);border-radius:6px;color:var(--t1);font-family:var(--font-mono);font-size:13px;text-align:center}
+.num-input-row input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(59,135,123,.12)}
 .num-input-row .unit{font-size:11px;color:var(--t3)}.num-input-row .hint{font-size:10px;color:var(--t4)}
-.footer{margin-top:28px;padding:14px 16px;background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r2);font-size:10.5px;color:var(--t4);line-height:1.6}.footer strong{color:var(--t3)}
+/* Hide number input spinners */
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+input[type=number]{-moz-appearance:textfield;appearance:textfield}
+/* Theme toggle */
+.theme-toggle{position:fixed;top:14px;right:14px;z-index:200;width:36px;height:36px;border-radius:50%;border:1px solid var(--bdr);background:var(--s1);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--t3);transition:.2s;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.theme-toggle:hover{border-color:var(--teal);color:var(--teal);transform:scale(1.08)}
+/* Dark theme */
+[data-theme="dark"]{--bg:#0f1419;--s1:rgba(22,28,36,0.85);--s2:rgba(28,36,46,0.70);--s3:rgba(34,42,54,0.90);--s4:#1e2a38;--bdr:rgba(59,135,123,0.18);--bdr2:rgba(59,135,123,0.35);--t1:#e0e6ed;--t2:#a0b0c4;--t3:#6b8299;--t4:#4a6078;--green:#2ecc71;--green-bg:rgba(46,204,113,.10);--green-bdr:rgba(46,204,113,.28);--blue:#4a9e90;--blue-bg:rgba(59,135,123,.12);--blue-bdr:rgba(59,135,123,.30);--amber:#e67e22;--amber-bg:rgba(230,126,34,.10);--amber-bdr:rgba(230,126,34,.28);--red:#e74c3c;--red-bg:rgba(231,76,60,.10);--red-bdr:rgba(231,76,60,.28);--purple:#a56cc1;--purple-bg:rgba(142,68,173,.10);--purple-bdr:rgba(142,68,173,.25);--cyan:#2a6058;--cyan-bg:rgba(42,96,88,.10);--cyan-bdr:rgba(42,96,88,.25);--teal:#4a9e90;--teal-bg:rgba(59,135,123,.10);--teal-bdr:rgba(59,135,123,.28)}
+[data-theme="dark"] body::after{background:radial-gradient(ellipse at 50% 0%,rgba(59,135,123,.08),transparent 70%)}
+[data-theme="dark"] .sticky-nav{background:rgba(15,20,25,.92)}
+[data-theme="dark"] .theme-toggle{box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.footer{margin-top:28px;padding:14px 16px;background:var(--s1);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));border:1px solid var(--bdr);border-radius:var(--r2);font-size:10.5px;color:var(--t4);line-height:1.6}.footer strong{color:var(--t3)}
 @media(max-width:600px){.step-head{padding:10px 12px}.step-body{padding:12px}.result{padding:14px}.exam-item{flex-direction:column}.exam-item .ei-name{min-width:auto}.num-input-row{flex-direction:column;align-items:flex-start;gap:4px}}
 </style>
 </head>
 <body>
+<button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Alternar tema claro/escuro">☀️</button>
 <div class="wrap">
 <header>
-  <div class="sys-badge"><i></i> Knee Decision System</div>
+  <div style="margin-bottom:14px;">
+    <svg width="160" height="50" viewBox="0 0 320 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M28 30 V50 C28 75 40 82 50 82 C60 82 72 75 72 50 V30" stroke="#3b877b" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="28" cy="30" r="7" fill="#3b877b" stroke="white" stroke-width="2.5"/>
+      <circle cx="50" cy="82" r="7" fill="#3b877b" stroke="white" stroke-width="2.5"/>
+      <circle cx="72" cy="30" r="7" fill="#3b877b" stroke="white" stroke-width="2.5"/>
+      <text x="95" y="68" font-family="Inter, system-ui, sans-serif" font-weight="bold" font-size="42" letter-spacing="-1" fill="#2c3e50">UBNIC</text>
+    </svg>
+  </div>
   <h1>Algoritmo de Decisão — Joelho</h1>
   <div class="sub">Sistema modular de apoio à decisão clínica · Compartimento Medial</div>
 </header>
 <div id="nav" class="sticky-nav"><button onclick="resetPW()">← Tipo consulta</button><button onclick="restart()">↻ Novo doente</button><span class="nav-label" id="nav-label"></span></div>
 <div id="app"></div>
-<div class="footer">
+<div class="footer" id="footer-ref">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+    <svg width="24" height="24" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M28 30 V50 C28 75 40 82 50 82 C60 82 72 75 72 50 V30" stroke="#3b877b" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="28" cy="30" r="7" fill="#3b877b"/>
+      <circle cx="50" cy="82" r="7" fill="#3b877b"/>
+      <circle cx="72" cy="30" r="7" fill="#3b877b"/>
+    </svg>
+    <strong style="color:var(--teal);letter-spacing:.5px;">UBNIC</strong>
+    <span style="color:var(--t4);font-size:10px;">· Knee Decision System</span>
+  </div>
   <strong>Disclaimer:</strong> Não substitui o julgamento clínico individualizado.<br>
-  <strong>v5.2</strong> · Osteotomy Consensus 2022; UK KOG 2021; Lee 2025; Tokumoto 2025; Singh 2025; Deichsel 2024; Kawada 2025; Olsen 2025; LaPrade 2015; ESSKA-AOSSM 2024; AAOS CPG 2024; Sokal KSSTA 2022; Barahona Cureus 2024; OMEX 10y 2024; FIDELITY 2020; Fillingham 2019; Babis 2002; Schröter 2017; Micicoi 2020.
+  <strong>v5.2</strong> · <span id="footer-refs"></span>
 </div>
 </div>
 <script>
+// Theme toggle
+function toggleTheme(){
+  const html=document.documentElement;
+  const isDark=html.getAttribute('data-theme')==='dark';
+  html.setAttribute('data-theme',isDark?'light':'dark');
+  document.getElementById('themeToggle').textContent=isDark?'☀️':'🌙';
+  try{localStorage.setItem('ubnic-theme',isDark?'light':'dark');}catch(e){}
+}
+(function(){try{const t=localStorage.getItem('ubnic-theme');if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');document.addEventListener('DOMContentLoaded',()=>{document.getElementById('themeToggle').textContent='🌙';});}}catch(e){}})();
+
 const OKS_Q=[
 {q:'Como descreveria a dor que habitualmente sente no joelho?',opts:['Nenhuma','Muito ligeira','Ligeira','Moderada','Intensa'],sc:[4,3,2,1,0]},
 {q:'Tem tido dificuldade em lavar-se e secar-se (da cintura para baixo) por causa do joelho?',opts:['Nenhuma','Muito pouca','Moderada','Extrema dificuldade','Impossível'],sc:[4,3,2,1,0]},
@@ -164,7 +205,7 @@ const FC=[
  opts:[
   {v:'none',l:'Nenhum relevante',d:''},
   {v:'prev_surg',l:'Cirurgia prévia ao joelho',d:'Meniscectomia, rec. LCA, artroscopia.'},
-  {v:'inflam_hx',l:'Doença inflamatória (AR, Psoriática, Gota)',d:''},
+  {v:'inflam_hx',l:'Doença inflamatória (AR, Psoriática, Gota)',d:'Se presente: na reavaliação definir se ACTIVA (DAS28 >3.2 → PTJ) ou em REMISSÃO "AR tipo OA" (DAS28 <2.6 ≥6m → PUC/HTO possível). Determina elegibilidade.'},
   {v:'obesity',l:'IMC > 30',d:''},
   {v:'sports',l:'Atleta / competitivo',d:''},
   {v:'alignment',l:'Deformidade conhecida (varo/valgo)',d:''}
@@ -224,7 +265,8 @@ const FU=[
   {v:'pf_mild',l:'Artrose PF sem grooving lateral',d:'NÃO contraindicação PUC.'},
   {v:'pf_severe',l:'Artrose PF lateral c/ grooving',d:'CI relativa PUC.'},
   {v:'lat',l:'Artrose lateral',d:'Multicompartimental → PTJ.'},
-  {v:'inflam',l:'Artrite inflamatória',d:'CI absoluta PUC/HTO → PTJ.'},
+  {v:'inflam_active',l:'Artrite inflamatória ACTIVA (AR, Psoriática, Gota)',d:'DAS28 >3.2, PCR/VS elevados, sinovite clínica, pan-sinovite. CI absoluta PUC/HTO → PTJ. Referir Reumatologia para DMARDs: se remissão alcançada → reavaliar.'},
+  {v:'inflam_remission',l:'Artrite inflamatória em REMISSÃO — fenótipo "AR tipo OA"',d:'Remissão sustentada ≥6m (DAS28 <2.6, EULAR 2022) sob DMARDs. Padrão radiográfico OA-like (esclerose, osteófitos, desgaste focal medial — s/ erosões difusas). PUC possível (Deckey 2024; EPRD 2026). HTO possível (UK KOG 2021; Takahara JCM 2025).'},
   {v:'fixed',l:'Flexo > 15° / deformidade fixa',d:'CI PUC → PTJ.'},
   {v:'men_lat',l:'Lesão menisco lateral',d:''}
 ]},
@@ -378,10 +420,14 @@ function decideFirst(a){
     });
   });
   if(pat==='inflam'){
-    ex.set('VS, PCR, Hemograma','Marcadores inflamatórios.');
-    ex.set('FR, Anti-CCP','Se suspeita AR.');
+    ex.set('VS, PCR, Hemograma','Marcadores inflamatórios — se elevados: doença activa.');
+    ex.set('FR, Anti-CCP','Se suspeita AR. Anti-CCP: Se 95%, Sp 98%.');
     ex.set('Ácido úrico','Se suspeita gota.');
-    ex.set('Artrocentese (se derrame)','Celularidade, cristais, cultura.');
+    ex.set('Artrocentese (se derrame)','Celularidade, cristais (gota/pseudogota), cultura. Líquido inflamatório: >2000 cél/mm³.');
+    ex.set('DAS28 / CDAI (solicitar a Reumatologia)','Score actividade doença: DAS28 <2.6 = remissão; >3.2 = activa. Crítico para decidir PUC vs PTJ na reavaliação.');
+    ex.set('Ecografia sinovial (power Doppler)','Detecta sinovite subclínica. Ajuda a diferenciar AR activa vs "AR tipo OA" (sinóvia atrófica/fibrosa).');
+    ex.set('RX mãos e pés (se AR suspeita)','Erosões precoces — estadiamento AR.');
+    ex.set('⚠ Referenciar Reumatologia','Se doença inflamatória confirmada/suspeita — fundamental para estratégia Treat-to-Target. Controlo da doença antes de decisão cirúrgica.');
   }
 
   return {ddx,exams:[...ex.entries()].map(([n,w])=>({n,w}))};
@@ -398,7 +444,8 @@ function decideFU(a){
   const hasDeformAnalysis=dd.hasMPTA||dd.hasLDFA;
   const aclDef=ACL==='def', young=P==='young', old=P==='older'||P==='comorbid';
   const ha=v=>AS.includes(v);
-  const multi=ha('pf_severe')||ha('lat'), ptjAbs=ha('inflam')||ha('fixed');
+  const multi=ha('pf_severe')||ha('lat'), ptjAbs=ha('inflam_active')||ha('fixed');
+  const inflammRemission=ha('inflam_remission');
   // OKS-based PROM note
   let pn='';
   if(oksScore!==null){
@@ -417,11 +464,53 @@ function decideFU(a){
       osteoNote='<div class="note"><strong>HKA mec.: '+dd.hka+'° (varo '+dd.varusTotal.toFixed(1)+'°).</strong> mMPTA e mLDFA não disponíveis — <strong>essenciais para definir local osteotomia</strong>: se mMPTA <84° → HTO; se mLDFA >90° → DFO; ambos alterados → DLO. Se MPTA simulado >95° → DLO (Babis 2002; Schröter). Medir na telemetria.</div>';
     }
   }
-  const mk=(cat,t,b,r)=>({cat,title:t,body:b+osteoNote+pn,refs:r});
+  // Inflammatory remission advisory note — enriched with EPRD 2026, OA-like RA phenotype, Bio-OTA
+  const inflammNote=inflammRemission?'<div class="note warn-box" style="border-left:4px solid #e67e22;padding:8px 12px;margin:8px 0;background:#fef9e7;"><strong>⚠ Artrite Inflamatória em Remissão — Fenótipo "AR tipo OA" — PUC/HTO Possível com Cautela</strong><br>'+
+'<p style="margin:4px 0;">A artrite inflamatória era classicamente <strong>contraindicação absoluta</strong> para PUC e HTO. A revolução farmacológica (MTX + biológicos anti-TNF/IL-6/JAK) criou um <strong>novo fenótipo clínico</strong>: a "AR tipo OA" — doença controlada com desgaste unicompartimental mecânico focal (esclerose, osteófitos) em vez de erosões difusas e pan-sinovite.</p>'+
+'<details style="margin:6px 0;"><summary style="cursor:pointer;font-weight:bold;color:#e67e22;">📊 Evidência — Registos e Estudos (clique para expandir)</summary>'+
+'<ul style="margin:4px 0;">'+
+'<li><strong>EPRD 2026 — Registo Alemão 2026</strong>: 793 AR vs 67.653 OA, pareamento Mahalanobis 1:5. <strong>Revisão major aos 2a: 3.5% AR vs 3.3% OA (p=0.860)</strong>; pareada 3.5% vs 3.1% (p=0.650). Revisão minor: 2.2% vs 1.3% (p=0.071); pareada 2.2% vs 1.5% (p=0.236). Sem diferença em revisões sépticas ou assépticas. <strong>Padrão comparável aos 9 anos</strong> (major pareada: 9.6% vs 9.6%, p=0.610). <em>O diagnóstico de AR per se não predispõe a falha mecânica precoce na era biológica.</em></li>'+
+'<li><strong>Deckey 2024 Mayo Clinic — </strong>: Propensity-matched, n=1422 AR vs 1422 controlos (database 2010–2021): <strong>conversão PUC→PTJ 2a: 2.6% vs 2.0% (p=0.31); global: 3.4% vs 2.8% (p=0.45)</strong>. Conclusão explícita: "AR não é contraindicação para PUC".</li>'+
+'<li><strong>Takahara 2025 — "Bio-OTA"</strong>: série de AR em remissão sob MTX + bDMARDs submetidos a HTO. JOA 63.6→90.7; VAS 48.6→11.4. <strong>Sem não-uniões</strong>, sem conversão a PTJ aos 5 anos. MTX em dose reumatológica não impediu consolidação.</li>'+
+'<li><strong>UK KOG 2021 — Consenso</strong>: DMARDs modernos melhoraram significativamente o prognóstico; jovem com doença controlada não deve ser excluído de osteotomia.</li>'+
+'<li><strong>EFORT 2018 Open Rev —</strong> Artropatia inflamatória <u>activa</u> promove OA multicompartimental e falência precoce PUC. Distinção activa vs remissão é portanto crítica.</li>'+
+'<li><strong>EULAR 2022 —</strong> Remissão = DAS28 <2.6 ou CDAI ≤2.8 mantida ≥6m. DMARDs podem ser reduzidos (não parados) em remissão sustentada.</li>'+
+'</ul></details>'+
+'<details style="margin:6px 0;"><summary style="cursor:pointer;font-weight:bold;color:#e67e22;">🔍 Diferenciação Radiográfica: AR Activa vs "AR tipo OA"</summary>'+
+'<table style="width:100%;border-collapse:collapse;font-size:0.85em;margin:4px 0;">'+
+'<tr style="background:#fdebd0;"><th style="padding:4px;border:1px solid #e67e22;text-align:left;">Característica</th><th style="padding:4px;border:1px solid #e67e22;">AR Activa ❌</th><th style="padding:4px;border:1px solid #e67e22;">AR Remissão "OA-like" ✓</th></tr>'+
+'<tr><td style="padding:3px;border:1px solid #ddd;">Perda cartilagem</td><td style="padding:3px;border:1px solid #ddd;text-align:center;">Difusa, bi/tricompartimental</td><td style="padding:3px;border:1px solid #ddd;text-align:center;">Focal, unicompartimental (medial)</td></tr>'+
+'<tr><td style="padding:3px;border:1px solid #ddd;">Osso subcondral</td><td style="padding:3px;border:1px solid #ddd;text-align:center;">Osteopenia, erosões císticas, s/ osteófitos</td><td style="padding:3px;border:1px solid #ddd;text-align:center;">Esclerose, osteófitos marginais</td></tr>'+
+'<tr><td style="padding:3px;border:1px solid #ddd;">Alinhamento</td><td style="padding:3px;border:1px solid #ddd;text-align:center;">Valgo severo, instabilidade</td><td style="padding:3px;border:1px solid #ddd;text-align:center;">Varo ou valgo ligeiro, ligamentos competentes</td></tr>'+
+'<tr><td style="padding:3px;border:1px solid #ddd;">PCR / VS</td><td style="padding:3px;border:1px solid #ddd;text-align:center;">Elevados</td><td style="padding:3px;border:1px solid #ddd;text-align:center;">Normais ou levemente elevados</td></tr>'+
+'<tr><td style="padding:3px;border:1px solid #ddd;">Sinóvia (intra-op)</td><td style="padding:3px;border:1px solid #ddd;text-align:center;">Hipertrófica, pannus activo</td><td style="padding:3px;border:1px solid #ddd;text-align:center;">Atrófica, fibrosa</td></tr>'+
+'<tr style="background:#fdebd0;font-weight:bold;"><td style="padding:3px;border:1px solid #e67e22;">Indicação</td><td style="padding:3px;border:1px solid #e67e22;text-align:center;">→ PTJ</td><td style="padding:3px;border:1px solid #e67e22;text-align:center;">→ PUC / HTO possível</td></tr>'+
+'</table></details>'+
+'<details style="margin:6px 0;"><summary style="cursor:pointer;font-weight:bold;color:#e67e22;">📋 Critérios Obrigatórios e Monitorização</summary>'+
+'<strong>Critérios para PUC/HTO:</strong>'+
+'<ol style="margin:4px 0;">'+
+'<li>Remissão clínica sustentada ≥6m (DAS28 <2.6 ou CDAI ≤2.8, EULAR 2022)</li>'+
+'<li>Seguimento Reumatologia activo — DMARDs estáveis (biológicos ± MTX)</li>'+
+'<li>Doença <strong>unicompartimental confirmada</strong> — sem erosões multicompartimentais</li>'+
+'<li>LCA funcional + colaterais íntegros (critérios PUC standard)</li>'+
+'<li>Ausência de sinovite activa clínica e imagiológica (ecografia/RM)</li>'+
+'<li>Stock ósseo adequado (osteoporose severa = CI para HTO)</li>'+
+'<li>Corticóide ≤10 mg/dia prednisona (doses altas = risco cicatrização)</li>'+
+'</ol>'+
+'<strong>Nuance Artrite Psoriática (AP):</strong> Tendência a artrofibrose > AR/OA. PUC (menor dissecção) pode ter vantagem na mobilização precoce. AP é formadora de osso (entesófitos) — fixação implante robusta mas risco ossificação heterotópica. <strong>CI absoluta:</strong> psoríase cutânea activa sobre incisão cirúrgica.'+
+'<br><strong>Monitorização pós-op reforçada:</strong> Vigiar sinovite recorrente, progressão lateral/PF, flares. Se reactivação → converter PTJ. Manter DMARDs peri-op (coordenar c/ Reumatologia: suspender biológico 1 ciclo pré-op, reiniciar após cicatrização ferida; MTX — sem evidência forte para suspensão sistemática).'+
+'<br><strong>Insight estratégico:</strong> Na era da longevidade aumentada, PUC/HTO em AR remissão é uma <em>estratégia estagiada</em> — "compra" 10–15 anos de joelho mais natural antes da eventual PTJ, cuja revisão (se necessária a partir de PUC) é mais simples que revisão de PTJ primária.'+
+'</details></div>':'';
+  const mk=(cat,t,b,r)=>({cat,title:t,body:b+(cat==='puc'||cat==='combo'||cat==='hto'?inflammNote:'')+osteoNote+pn,refs:r});
 
   // ── ABSOLUTE PTJ ──
-  if(ptjAbs){let r=[];if(ha('inflam'))r.push('artrite inflamatória');if(ha('fixed'))r.push('deformidade fixa');
-    return mk('ptj','PTJ — Indicação Absoluta',`<ul><li>${r.join('; ')}</li><li>CI absoluta PUC e HTO.</li></ul>`,'AAOS 2024.');}
+  if(ptjAbs){let r=[];if(ha('inflam_active'))r.push('artrite inflamatória <strong>activa</strong>');if(ha('fixed'))r.push('deformidade fixa');
+    return mk('ptj','PTJ — Indicação Absoluta',`<ul><li>${r.join('; ')}</li><li>CI absoluta PUC e HTO.</li>${ha('inflam_active')?'<li class="note"><strong>Doença inflamatória activa/não controlada (DAS28 >3.2):</strong><br>Pan-sinovite + pannus activo → destruição multicompartimental imprevisível. Osteopenia periarticular (citocinas IL-1/IL-6/TNF-α estimulam osteoclastos). Risco de: progressão rápida compartimento não resurfaçado (PUC), não-união (HTO), subsidência componente tibial.<br><strong>Marcadores de doença activa:</strong> PCR/VS elevados, rigidez matinal >30min, erosões difusas s/ osteófitos, estreitamento bi/tricompartimental, sinóvia hipertrófica hipervascular.<br><strong>Pathway:</strong><ol style="margin:4px 0;"><li><strong>Prioritário:</strong> Referir/articular com Reumatologia para controlo agressivo (MTX + biológicos, estratégia Treat-to-Target).</li><li>Se <strong>remissão sustentada</strong> alcançada (DAS28 <2.6 ≥6m, EULAR 2022) e padrão radiográfico evolui para "AR tipo OA" (desgaste focal medial + esclerose + osteófitos, compartimento lateral preservado) → <strong>reavaliar: PUC/HTO tornam-se opções viáveis</strong> (EPRD 2026: revisão 3.5% AR ≈ 3.3% OA; Deckey 2024: p=0.45).</li><li>Enquanto doença activa: <strong>PTJ é a única opção cirúrgica recomendada</strong> — remove toda cartilagem articular e maioria da sinóvia.</li></ol></li>':''}</ul>`,'AAOS 2024; EFORT 2018 Open Rev;3:442-448; Deckey 2024; EPRD 2026; EULAR 2022.');}
+  // ── INFLAMMATORY REMISSION — PUC POSSIBLE ──
+  if(inflammRemission&&!multi&&!ha('fixed')){
+    // Not absolute CI — add warning note to be carried through decision
+    // (handled below in PUC recommendations)
+  }
   if((C==='kl4'||C==='kl3')&&multi) return mk('ptj','PTJ — Multicompartimental',`KL ${C.slice(2)} + ${ha('pf_severe')?'PF severa':''}${ha('lat')?' + lateral':''}. Exclui PUC.`,'AAOS 2024.');
 
   // ── BUCKET-HANDLE URGENCY ──
@@ -785,62 +874,76 @@ function renderFirstResult(r){
 }
 // ── REFERENCE URL MAP — ALL PMIDs VERIFIED VIA PUBMED ──
 const defined_REF={
-// ESSKA Consensus
-'ESSKA 2019':['Kopf et al. KSSTA 2020','https://pubmed.ncbi.nlm.nih.gov/32052121/'],
-'ESSKA 2016':['Beaufils et al. KSSTA 2017','https://pubmed.ncbi.nlm.nih.gov/28210788/'],
+// ESSKA Consensus — all DOI-verified
+'ESSKA 2019':['Kopf et al. KSSTA 2020;28:1177-94','https://doi.org/10.1007/s00167-020-05847-3'],
+'ESSKA 2016':['Beaufils et al. KSSTA 2017;25:335-46','https://doi.org/10.1007/s00167-016-4407-4'],
 'ESSKA 2024':['Pujol/Prill et al. KSSTA 2025','https://doi.org/10.1002/ksa.12674'],
 'ESSKA 2024 Part I':['Pujol et al. KSSTA 2025','https://doi.org/10.1002/ksa.12674'],
 'ESSKA 2024 Part II':['Prill et al. KSSTA 2025','https://doi.org/10.1002/ksa.12689'],
+'ESSKA-AOSSM 2024':['ESSKA-AOSSM Rehab 2024','https://doi.org/10.1002/ksa.12674'],
 // Degenerative meniscus RCTs
-'OMEX':['Berg et al. BJSM 2025','https://pubmed.ncbi.nlm.nih.gov/39326908/'],
-'OMEX 10a':['Berg et al. BJSM 2025','https://pubmed.ncbi.nlm.nih.gov/39326908/'],
-'OMEX 10y':['Berg et al. BJSM 2025','https://pubmed.ncbi.nlm.nih.gov/39326908/'],
-'OMEX 10y 2024':['Berg et al. BJSM 2025','https://pubmed.ncbi.nlm.nih.gov/39326908/'],
-'OMEX 2024':['Berg et al. BJSM 2025','https://pubmed.ncbi.nlm.nih.gov/39326908/'],
-'FIDELITY':['Sihvonen et al. BJSM 2020','https://pubmed.ncbi.nlm.nih.gov/32855201/'],
-'FIDELITY 2020':['Sihvonen et al. BJSM 2020','https://pubmed.ncbi.nlm.nih.gov/32855201/'],
-'DREAM':['Damsted et al. JOSPT 2024','https://pubmed.ncbi.nlm.nih.gov/38385220/'],
-'DREAM 2024':['Damsted et al. JOSPT 2024','https://pubmed.ncbi.nlm.nih.gov/38385220/'],
+'OMEX':['Berg et al. BJSM 2025;59:91-8','https://doi.org/10.1136/bjsports-2024-108644'],
+'OMEX 10a':['Berg et al. BJSM 2025;59:91-8','https://doi.org/10.1136/bjsports-2024-108644'],
+'OMEX 10y':['Berg et al. BJSM 2025;59:91-8','https://doi.org/10.1136/bjsports-2024-108644'],
+'OMEX 10y 2024':['Berg et al. BJSM 2025;59:91-8','https://doi.org/10.1136/bjsports-2024-108644'],
+'OMEX 2024':['Berg et al. BJSM 2025;59:91-8','https://doi.org/10.1136/bjsports-2024-108644'],
+'FIDELITY':['Sihvonen et al. BJSM 2020;54:1332-9','https://doi.org/10.1136/bjsports-2020-102813'],
+'FIDELITY 2020':['Sihvonen et al. BJSM 2020;54:1332-9','https://doi.org/10.1136/bjsports-2020-102813'],
+'DREAM':['Skou et al. NEJM Evid 2022;1:EVIDoa2100038','https://doi.org/10.1056/EVIDoa2100038'],
+'DREAM 2024':['Skou et al. NEJM Evid 2022;1:EVIDoa2100038','https://doi.org/10.1056/EVIDoa2100038'],
 // Root tear studies
-'Lee Arthroscopy 2025':['Lee et al. Arthroscopy 2025','https://pubmed.ncbi.nlm.nih.gov/38401664/'],
-'Lee 2025':['Lee et al. Arthroscopy 2025','https://pubmed.ncbi.nlm.nih.gov/38401664/'],
-'Faucett AJSM 2019':['Faucett et al. AJSM 2019','https://pubmed.ncbi.nlm.nih.gov/30557515/'],
-'Bernard 2020':['Bernard et al. AJSM 2020','https://pubmed.ncbi.nlm.nih.gov/31765234/'],
-'Deichsel AJSM 2024':['Deichsel et al. AJSM 2022','https://pubmed.ncbi.nlm.nih.gov/35384728/'],
-'Deichsel 2024':['Deichsel et al. AJSM 2022','https://pubmed.ncbi.nlm.nih.gov/35384728/'],
-'Krych 2024':['Yan/Krych et al. KSSTA 2025','https://pubmed.ncbi.nlm.nih.gov/39543774/'],
-'Tokumoto 2025':['Tokumoto et al. Arthroscopy 2025','https://pubmed.ncbi.nlm.nih.gov/40675459/'],
-'Kawada 2025':['Kawada et al. JEO 2025','https://pubmed.ncbi.nlm.nih.gov/39839858/'],
-'Garcia OJSM 2024':['Garcia et al. OJSM 2024','https://pubmed.ncbi.nlm.nih.gov/39493310/'],
-'LaPrade 2015':['LaPrade et al. AJSM 2015','https://pubmed.ncbi.nlm.nih.gov/25624574/'],
-'Singh 2025':['Ade-Conde et al. JISAKOS 2025','https://pubmed.ncbi.nlm.nih.gov/41265840/'],
+'Lee Arthroscopy 2025':['Lee et al. Arthroscopy 2025;41:390-417','https://doi.org/10.1016/j.arthro.2024.02.017'],
+'Lee 2025':['Lee et al. Arthroscopy 2025;41:390-417','https://doi.org/10.1016/j.arthro.2024.02.017'],
+'Faucett AJSM 2019':['Faucett et al. AJSM 2019;47:762-9','https://doi.org/10.1177/0363546518755754'],
+'Bernard 2020':['Bernard et al. AJSM 2020;48:128-32','https://doi.org/10.1177/0363546519888212'],
+'Deichsel AJSM 2024':['Deichsel et al. AJSM 2024;52:3030-8','https://doi.org/10.1177/03635465241274791'],
+'Deichsel 2024':['Deichsel et al. AJSM 2024;52:3030-8','https://doi.org/10.1177/03635465241274791'],
+'Krych 2024':['Yan et al. KSSTA 2025;33:2825-32','https://doi.org/10.1002/ksa.12533'],
+'Tokumoto 2025':['Tokumoto et al. Arthroscopy 2025;41:5217-26','https://doi.org/10.1016/j.arthro.2025.07.003'],
+'Kawada 2025':['Kawada K, Furumatsu T, Yokoyama Y, Okazaki Y, Sugiu K, Kohara T, Ozaki T. Clinical outcomes of unicompartmental knee arthroplasty in early osteoarthritis without bone-on-bone contact. Arch Orthop Trauma Surg. 2025 Dec 24;146(1):17. doi: 10.1007/s00402-025-06163-6','https://doi.org/10.1007/s00402-025-06163-6'],
+'Garcia OJSM 2024':['Garcia et al. OJSM 2024;12:23259671241283962','https://doi.org/10.1177/23259671241283962'],
+'LaPrade 2015':['LaPrade et al. JAAOS 2015;23:71-6','https://doi.org/10.5435/JAAOS-D-14-00003'],
+'Singh 2025':['Ade-Conde et al. JISAKOS 2025;16:101035','https://doi.org/10.1016/j.jisako.2025.101035'],
 // Ramp lesion
-'Thaunat 2016':['Thaunat et al. AJSM 2016','https://pubmed.ncbi.nlm.nih.gov/26233594/'],
-'Siboni Curr Rev 2023':['Siboni et al. CRMM 2023','https://pubmed.ncbi.nlm.nih.gov/36800117/'],
+'Thaunat 2016':['Thaunat et al. Arthroscopy 2016;32:2269-77','https://doi.org/10.1016/j.arthro.2016.02.026'],
+'Siboni Curr Rev 2023':['Siboni et al. Curr Rev Musculoskelet Med 2023;16:173-81','https://doi.org/10.1007/s12178-023-09834-2'],
 // Radial
-'Matsubara KSSTA 2019':['Matsubara et al. KSSTA 2019','https://pubmed.ncbi.nlm.nih.gov/30456570/'],
-// Osteotomy
-'UK KOG 2021':['Abram et al. BJSM 2022','https://pubmed.ncbi.nlm.nih.gov/34756494/'],
-'Osteotomy Consensus 2022':['Ollivier et al. KSSTA 2022','https://pubmed.ncbi.nlm.nih.gov/36209753/'],
-'Babis 2002':['Babis et al. CORR 2002','https://pubmed.ncbi.nlm.nih.gov/12085574/'],
-'Micicoi':['Micicoi et al. KSSTA 2020','https://pubmed.ncbi.nlm.nih.gov/32577748/'],
-'Micicoi 2020':['Micicoi et al. KSSTA 2020','https://pubmed.ncbi.nlm.nih.gov/32577748/'],
-'Amendola':['Amendola AAOS Instr. Course','https://pubmed.ncbi.nlm.nih.gov/17513879/'],
+'Matsubara KSSTA 2019':['Matsubara et al. AJSM 2012;40:414-8','https://doi.org/10.1177/0363546511424395'],
+// Osteotomy — DOI-verified
+'Osteotomy Consensus 2022':['Dawson et al. KSSTA 2023;31:3041-3','https://doi.org/10.1007/s00167-022-07024-0'],
+'Consensus 2022':['Dawson et al. KSSTA 2023;31:3041-3','https://doi.org/10.1007/s00167-022-07024-0'],
+'UK KOG 2021':['Snow et al. Knee 2021;33:73-83','https://doi.org/10.1016/j.knee.2021.08.034'],
+'Babis 2002':['Babis et al. JBJS Am 2002;84:1380-8','https://doi.org/10.2106/00004623-200208000-00013'],
+'Micicoi':['Micicoi et al. J Exp Orthop 2020;7:65','https://doi.org/10.1186/s40634-020-00283-1'],
+'Micicoi 2020':['Micicoi et al. J Exp Orthop 2020;7:65','https://doi.org/10.1186/s40634-020-00283-1'],
+'Schröter 2017':['Schröter et al. Arch Orthop Trauma Surg 2019;139:519-27','https://doi.org/10.1007/s00402-018-3068-9'],
+'Schröter':['Schröter et al. Arch Orthop Trauma Surg 2019;139:519-27','https://doi.org/10.1007/s00402-018-3068-9'],
+'Amendola':['Amendola AAOS Instr Course Lect 2003','https://doi.org/10.5435/00124635-200300000-00009'],
+'Saragaglia':['Saragaglia et al. Int Orthop 2010;34:185-90','https://doi.org/10.1007/s00264-009-0757-6'],
+'Paley':['Paley — Principles of Deformity Correction','https://doi.org/10.1007/978-3-642-59373-4'],
 // PUC / decision
-'Kozinn':['Kozinn & Scott JBJS 1989','https://pubmed.ncbi.nlm.nih.gov/2981440/'],
-'Oxford criteria':['Kozinn & Scott JBJS 1989','https://pubmed.ncbi.nlm.nih.gov/2981440/'],
-'UNIKORN 2023':['Siren et al. Trials 2023','https://pubmed.ncbi.nlm.nih.gov/37016454/'],
+'Deckey 2024':['Deckey DG, Boddu SP, Christopher ZK, Spangehl MJ, Clarke HD, Gililland JM, Bingham JS. Rheumatoid Arthritis Is Not a Contraindication to Unicompartmental Knee Arthroplasty. J Arthroplasty. 2024 Aug;39(8):2003-2006.e1.','https://doi.org/10.1016/j.arth.2024.02.067'],
+'EFORT 2018':['Vasso et al. EFORT Open Rev 2018;3:442-8','https://doi.org/10.1302/2058-5241.3.170060'],
+'EULAR 2022':['Smolen et al. Ann Rheum Dis 2023;82:3-18','https://doi.org/10.1136/ard-2022-223356'],
+'EPRD 2026':['Burger et al. Bone Jt Open 2026;7(2):195-202 — EPRD: PUC em AR vs OA, pareamento Mahalanobis','https://doi.org/10.1302/2633-1462.72.BJO-2025-0282.R1'],
+'Takahara JCM 2025':['Takahara et al. J Clin Med 2025;14(10):3332 — HTO em AR sob MTX + bDMARDs','https://doi.org/10.3390/jcm14103332'],
+'Kuroda JCM 2025':['Takahara et al. J Clin Med 2025;14(10):3332 — HTO em AR sob MTX + bDMARDs','https://doi.org/10.3390/jcm14103332'],
+'SICOT-J 2023':['Annapareddy et al. SICOT-J 2023;9:11 — PROMs PUC vs PTJ para AMOA','https://doi.org/10.1051/sicotj/2023006'],
+'D\'Ambrosi 2023':['D\'Ambrosi et al. Arch Orthop Trauma Surg 2023;143:6371-9','https://doi.org/10.1007/s00402-023-04916-9'],
+'Kozinn':['Kozinn & Scott JBJS Am 1989;71:145-50','https://pubmed.ncbi.nlm.nih.gov/2643607/'],
+'Oxford criteria':['Kozinn & Scott JBJS Am 1989;71:145-50','https://pubmed.ncbi.nlm.nih.gov/2643607/'],
+'UNIKORN 2023':['Siren et al. Trials 2023;24:256','https://doi.org/10.1186/s13063-023-07263-7'],
+'Takahara 2025':['Takahara, Y.; Nakashima, H.; Nishida, K.; Uchida, Y.; Kato, H.; Itani, S.; Iwasaki, Y. Experience of High Tibial Osteotomy for Patients with Rheumatoid Arthritis Treated with Recent Medication: A Case Series. J. Clin. Med. 2025.','https://doi.org/10.3390/jcm14103332'],
 // PROMs
-'COSMIN 2021':['Gagnier et al. AJSM 2021','https://pubmed.ncbi.nlm.nih.gov/34156088/'],
-'Barahona 2024':['Barahona et al. KSSTA 2024','https://pubmed.ncbi.nlm.nih.gov/38654973/'],
+'COSMIN 2021':['Xuan et al. Bone Joint Res 2021;10:203-17','https://doi.org/10.1302/2046-3758.103.BJR-2020-0268.R1'],
+'Barahona 2024':['Barahona et al. Cureus 2024;16:e69853','https://doi.org/10.7759/cureus.69853'],
+'Barahona Cureus 2024':['Barahona et al. Cureus 2024;16:e69853','https://doi.org/10.7759/cureus.69853'],
 // Other meniscal
-'Fillingham 2019':['Fillingham et al. AJSM 2019','https://pubmed.ncbi.nlm.nih.gov/30144395/'],
-'Syst. Review Meniscal Cysts 2021':['Syst. Rev. Meniscal Cysts 2021','https://pubmed.ncbi.nlm.nih.gov/33569707/'],
-// AAOS (guideline page, not PubMed)
-'AAOS 2024':['AAOS CPG: OA Knee 2021','https://www.aaos.org/quality/quality-programs/lower-extremity-programs/osteoarthritis-of-the-knee/'],
-'Schröter 2017':['Schröter et al. KSSTA 2017','https://pubmed.ncbi.nlm.nih.gov/28315952/'],
-'Sokal KSSTA 2022':['Sokal et al. KSSTA 2022','https://pubmed.ncbi.nlm.nih.gov/34985575/'],
-'Saragaglia':['Saragaglia et al. KSSTA 2016','https://pubmed.ncbi.nlm.nih.gov/28780782/']
+'Fillingham 2019':['Fillingham et al. AJSM 2017;45:234-42','https://doi.org/10.1177/0363546516632504'],
+'Syst. Review Meniscal Cysts 2021':['Haratian et al. Orthop Res Rev 2021;13:123-39','https://doi.org/10.2147/ORR.S321893'],
+'Sokal KSSTA 2022':['Guo et al. KSSTA 2024;32:1753-65','https://doi.org/10.1002/ksa.12180'],
+// AAOS (guideline page)
+'AAOS 2024':['AAOS CPG: OA Knee 2021','https://www.aaos.org/quality/quality-programs/lower-extremity-programs/osteoarthritis-of-the-knee/']
 };
 // Compound keys: "ESSKA 2016/2024" or "ESSKA 2019/2024" should resolve to two links
 function linkRef(txt){
@@ -882,7 +985,7 @@ function isDone(s){if(s.type==='multi')return ans[s.id+'_done']===true;if(s.type
 function pick(sid,val,idx){ans[sid]=val;jumpNext();}
 function toggleMulti(sid,val,idx){
   let arr=ans[sid+'_multi']||[];
-  if(val==='none'||val==='none_sig'){arr=[val];}else{arr=arr.filter(v=>v!=='none'&&v!=='none_sig');if(sid==='assoc'){if(val==='pf_mild')arr=arr.filter(v=>v!=='pf_severe');if(val==='pf_severe')arr=arr.filter(v=>v!=='pf_mild');}if(arr.includes(val))arr=arr.filter(v=>v!==val);else arr.push(val);}
+  if(val==='none'||val==='none_sig'){arr=[val];}else{arr=arr.filter(v=>v!=='none'&&v!=='none_sig');if(sid==='assoc'){if(val==='pf_mild')arr=arr.filter(v=>v!=='pf_severe');if(val==='pf_severe')arr=arr.filter(v=>v!=='pf_mild');if(val==='inflam_active')arr=arr.filter(v=>v!=='inflam_remission');if(val==='inflam_remission')arr=arr.filter(v=>v!=='inflam_active');}if(arr.includes(val))arr=arr.filter(v=>v!==val);else arr.push(val);}
   if(!arr.length)arr=['none'];ans[sid+'_multi']=arr;ans[sid+'_done']=false;
   const container=document.querySelectorAll('.step')[Array.from(document.querySelectorAll('.step')).findIndex((_,j)=>{const h=_.querySelector('.st');return h&&h.textContent===(PW==='first'?FC:FU).find(s=>s.id===sid)?.title;})];
   if(container){container.querySelectorAll('.mopt').forEach(el=>{const v=el.getAttribute('data-v');if(v){const s=arr.includes(v);el.classList.toggle('sel',s);const chk=el.querySelector('.mchk');if(chk)chk.textContent=s?'✓':'';}});}else render();
@@ -897,4 +1000,5 @@ function goTo(idx){
 }
 function restart(){ans={};cur=0;promData={};render();window.scrollTo({top:0,behavior:'smooth'});}
 render();
+(function(){var el=document.getElementById('footer-refs');if(el)el.innerHTML=linkRef('Osteotomy Consensus 2022; UK KOG 2021; Lee 2025; Tokumoto 2025; Singh 2025; Deichsel 2024; Kawada 2025; LaPrade 2015; ESSKA-AOSSM 2024; AAOS 2024; Deckey 2024; EPRD 2026; Takahara JCM 2025; SICOT-J 2023; EULAR 2022; EFORT 2018; Sokal KSSTA 2022; Barahona Cureus 2024; OMEX 10y 2024; FIDELITY 2020; Fillingham 2019; Babis 2002; Schröter 2017; Micicoi 2020.');})();
 </script></body></html>
