@@ -17,7 +17,7 @@ header{text-align:center;padding:36px 0 20px}
 .sys-badge i{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)}
 h1{font-family:var(--font-sans);font-weight:700;font-size:clamp(22px,4vw,34px);line-height:1.2;margin-bottom:6px;color:var(--t1)}
 .sub{font-size:13px;color:var(--t3);max-width:640px;margin:0 auto;font-weight:300}
-.sticky-nav{position:sticky;top:0;z-index:100;background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom:none;padding:8px 18px;margin:0 -18px;display:none;align-items:center;gap:8px;flex-wrap:wrap}
+.sticky-nav{position:relative;top:auto;z-index:100;background:transparent;border-bottom:none;padding:8px 0;margin:0;display:none;align-items:center;gap:8px;flex-wrap:wrap}
 .sticky-nav.vis{display:flex}
 .sticky-nav button{padding:5px 14px;border-radius:8px;border:1px solid var(--bdr);background:var(--s2);color:var(--t3);font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s;white-space:nowrap}
 .sticky-nav button:hover{border-color:var(--teal);color:var(--teal)}
@@ -100,7 +100,6 @@ input[type=number]{-moz-appearance:textfield;appearance:textfield}
 /* Dark theme */
 [data-theme="dark"]{--bg:#0f1419;--s1:rgba(22,28,36,0.85);--s2:rgba(28,36,46,0.70);--s3:rgba(34,42,54,0.90);--s4:#1e2a38;--bdr:rgba(59,135,123,0.18);--bdr2:rgba(59,135,123,0.35);--t1:#e0e6ed;--t2:#a0b0c4;--t3:#6b8299;--t4:#4a6078;--green:#2ecc71;--green-bg:rgba(46,204,113,.10);--green-bdr:rgba(46,204,113,.28);--blue:#4a9e90;--blue-bg:rgba(59,135,123,.12);--blue-bdr:rgba(59,135,123,.30);--amber:#e67e22;--amber-bg:rgba(230,126,34,.10);--amber-bdr:rgba(230,126,34,.28);--red:#e74c3c;--red-bg:rgba(231,76,60,.10);--red-bdr:rgba(231,76,60,.28);--purple:#a56cc1;--purple-bg:rgba(142,68,173,.10);--purple-bdr:rgba(142,68,173,.25);--cyan:#2a6058;--cyan-bg:rgba(42,96,88,.10);--cyan-bdr:rgba(42,96,88,.25);--teal:#4a9e90;--teal-bg:rgba(59,135,123,.10);--teal-bdr:rgba(59,135,123,.28)}
 [data-theme="dark"] body::after{background:radial-gradient(ellipse at 50% 0%,rgba(59,135,123,.08),transparent 70%)}
-[data-theme="dark"] .sticky-nav{background:rgba(15,20,25,.92)}
 [data-theme="dark"] .theme-toggle{box-shadow:0 2px 8px rgba(0,0,0,.25)}
 .footer{margin-top:28px;padding:14px 16px;background:var(--s1);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));border:1px solid var(--bdr);border-radius:var(--r2);font-size:10.5px;color:var(--t4);line-height:1.6}.footer strong{color:var(--t3)}
 @media(max-width:600px){.step-head{padding:10px 12px}.step-body{padding:12px}.result{padding:14px}.exam-item{flex-direction:column}.exam-item .ei-name{min-width:auto}.num-input-row{flex-direction:column;align-items:flex-start;gap:4px}}
@@ -768,7 +767,7 @@ function render(){
     else h+=renderFollowupResult(decideFU(ans));
   }
   $('app').innerHTML=h;
-  if(cur>0)setTimeout(function(){var e=document.querySelectorAll('.step,.result');if(e.length)e[e.length-1].scrollIntoView({behavior:'smooth',block:'center'});},80);
+  if(cur>0)setTimeout(function(){var e=document.querySelectorAll('.step,.result');if(e.length)e[e.length-1].scrollIntoView({behavior:'smooth',block:'start'});},80);
 }
 
 function renderPWSel(){$('app').innerHTML='<div class="path-sel"><div class="path-card" onclick="setPW(\'first\')"><div class="path-icon">🔍</div><div class="path-title">1ª Consulta</div><div class="path-desc">Anamnese → exame objectivo → diagnósticos diferenciais → exames a pedir.</div></div><div class="path-card" onclick="setPW(\'followup\')"><div class="path-icon">📋</div><div class="path-title">Reavaliação</div><div class="path-desc">Resultados exames → decisão terapêutica (HTO/DFO/DLO/PUC/PTJ/reparação meniscal).</div></div></div>';}
